@@ -1,0 +1,31 @@
+/* Header. */
+.header {
+	-fx-background-color: #cd00ff;
+}
+
+.h-input {
+	-fx-pref-height: 25.0;
+	-fx-pref-width: 50.0;
+}
+/* Toolbar. */
+.toolbar {
+	-fx-background-color: #ff0000;
+}
+
+/* Canvas. */
+.canvas {
+	-fx-background-color: #0000ff;
+}
+
+/* Right sidebar tabs. */
+.tab-objects {
+	-fx-background-color: #ffa500;
+}
+
+.tab-properties {
+	-fx-background-color: #59ff00;
+}
+
+.tab-history {
+	-fx-background-color: #ddff00;
+}
