@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="163.0" prefWidth="230.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.frigvid.rspa.ui.fragment.TextController">
+	<TextArea id="textArea" fx:id="textArea" layoutX="15.0" layoutY="15.0" prefHeight="100.0" prefWidth="200.0" promptText="Enter text here" wrapText="true" />
+	<Button id="textItalic" fx:id="textItalic" layoutX="15.0" layoutY="125.0" minWidth="23.0" onAction="#textItalic" prefHeight="25.0" text="I">
+		<font>
+			<Font name="System Italic" size="12.0" />
+		</font>
+	</Button>
+	<Button id="textBold" fx:id="textBold" layoutX="48.0" layoutY="125.0" onAction="#textBold" text="B">
+		<font>
+			<Font name="System Bold" size="12.0" />
+		</font>
+	</Button>
+	<Button id="textUnderline" fx:id="textUnderline" disable="true" layoutX="81.0" layoutY="125.0" onAction="#textUnderline" text="U" underline="true" />
+	<Spinner editable="true" layoutX="116.0" layoutY="125.0" prefHeight="25.0" prefWidth="50.0" />
+	<Button id="textAdd" fx:id="textAdd" layoutX="177.0" layoutY="125.0" onAction="#textAdd" text="Add" />
+</AnchorPane>

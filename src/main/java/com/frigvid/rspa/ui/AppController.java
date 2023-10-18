@@ -1,15 +1,20 @@
 package com.frigvid.rspa.ui;
 
+import com.frigvid.rspa.App;
+import com.frigvid.rspa.test.Text;
+import com.frigvid.rspa.ui.fragment.TextController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.TabPane;
+import javafx.stage.Stage;
+import java.io.IOException;
 
-public class Controller
+public class AppController
 {
-	/* Yes, best practice of being consistent with syntax styles (like at annotation). But,
-	 * this saves space, and the compiler doesn't care either way, so it's fine. */
 	@FXML private Pane canvas;
 	@FXML private TabPane tabPane;
 	
@@ -25,26 +30,40 @@ public class Controller
 		Pane parentTabPane = (Pane) tabPane.getParent();
 		parentTabPane.heightProperty().addListener((obs, oldVal, newVal) -> tabPane.setPrefHeight(newVal.doubleValue()));
 		parentTabPane.widthProperty().addListener((obs, oldVal, newVal) -> tabPane.setPrefWidth(newVal.doubleValue()));
-		
-		/* Debug:
-		import javafx.application.Platform;
-		System.out.println("dCanvas: " + dCanvas);
-		System.out.println("canvasParent: " + canvasParent);
-		canvasParent.widthProperty().addListener((obs, oldVal, newVal) -> System.out.println("canvasParent width: " + newVal));
-		canvasParent.heightProperty().addListener((obs, oldVal, newVal) -> System.out.println("canvasParent height: " + newVal));
-		properties.heightProperty().addListener((obs, oldVal, newVal) -> System.out.println("properties height: " + newVal));
-		tabPane.heightProperty().addListener((obs, oldVal, newVal) -> System.out.println("tabPane height: " + newVal));
-		*/
 	}
 	
+	/**
+	 * Temporary method to verify functionality of buttons.
+	 */
 	@FXML
-	protected void tempTool(ActionEvent event)  {
+	protected void tempTool(ActionEvent event)
+	{
 		Button btn = (Button) event.getSource();
 		String id = btn.getId();
 		
 		System.out.println("Button String: " + btn);
 		System.out.println("Button Id: " + id);
-		
-		//btn.setText("hello");
+	}
+	
+	public void addText(Text drawableText)
+	{
+		canvas.getChildren().add(drawableText.getText());
+	}
+	
+	/**
+	 * Creates a new window to display text options.
+	 */
+	@FXML
+	protected void objectText() throws IOException
+	{
+		FXMLLoader fxml = new FXMLLoader(App.class.getResource("ui/text.fxml"));
+		Scene scene = new Scene(fxml.load());
+		TextController textController = fxml.getController();
+		textController.setAppController(this);
+		Stage stage = new Stage();
+		stage.setTitle("Input text");
+		stage.setScene(scene);
+		stage.show();
 	}
 }
+

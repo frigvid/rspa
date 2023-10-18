@@ -7,9 +7,16 @@
 	-fx-pref-height: 25.0;
 	-fx-pref-width: 50.0;
 }
+
 /* Toolbar. */
 .toolbar {
 	-fx-background-color: #ff0000;
+}
+
+.toolbar-btn {
+	-fx-pref-height: 25.0;
+	-fx-pref-width: 50.0;
+	-fx-cursor: hand;
 }
 
 /* Canvas. */
