@@ -1,9 +1,5 @@
 package com.frigvid.rspa;
 
-import com.frigvid.rspa.figure.Figure;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-
 public interface IFigure
 {
 	//double setStartX(double startX);

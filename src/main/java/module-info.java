@@ -9,11 +9,11 @@ module com.frigvid.rspa {
     requires org.kordamp.bootstrapfx.core;
 
     //exports com.frigvid.rspa.test;
-    exports com.frigvid.rspa.figure;
+    //exports com.frigvid.rspa.figure;
     opens com.frigvid.rspa to javafx.fxml;
     exports com.frigvid.rspa;
     //exports com.frigvid.rspa.ui;
     opens com.frigvid.rspa.ui to javafx.fxml;
-    //exports com.frigvid.rspa.ui.fragment;
+	//exports com.frigvid.rspa.ui.fragment;
     //opens com.frigvid.rspa.ui.fragment to javafx.fxml;
 }

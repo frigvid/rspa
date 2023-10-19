@@ -1,15 +1,17 @@
 package com.frigvid.rspa;
 
-import com.frigvid.rspa.figure.Figure;
-import com.frigvid.rspa.figure.Type;
 import com.frigvid.rspa.figure.shape.Circle;
+import com.frigvid.rspa.figure.shape.Line;
+import com.frigvid.rspa.figure.shape.Rectangle;
+import com.frigvid.rspa.figure.shape.Text;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
-import java.io.IOException;
 
 public class App extends Application
 {
@@ -22,7 +24,7 @@ public class App extends Application
 	private static final double MINIMUM_HEIGHT = 300.0;
 
 	@Override
-	public void start(Stage stage) throws IOException
+	public void start(Stage stage)
 	{
 		BorderPane root = new BorderPane();
 		Pane canvas = new Pane();
@@ -30,6 +32,10 @@ public class App extends Application
 		
 		root.setCenter(canvas);
 		//root.setRight(sidebar);
+		
+		// Setting background color to differentiate which is which.
+		canvas.setStyle("-fx-background-color: #7e1e1e;");
+		//sidebar.setStyle("-fx-background-color: #15e18c;");
 		
 		Scene scene = new Scene(root, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		stage.setTitle(DEFAULT_TITLE);
@@ -39,25 +45,33 @@ public class App extends Application
 		stage.setScene(scene);
 		stage.show();
 		
-		Figure circle = new Figure(Type.CIRCLE, 100, 50, 50);
-		canvas.getChildren().add(circle);
-		//circle.draw(canvas, circle);
+		// TEST: Adding shapes to canvas.
+		Circle circTest = new Circle(100, 100, 25);
+		circTest.setFill(Paint.valueOf("red"));
+		circTest.setStroke(Paint.valueOf("green"));
+		circTest.setOpacity(0.5);
+		canvas.getChildren().add(circTest);
 		
-		//Circle test = new Circle(100, 50, 50);
-		//canvas.getChildren().add(test);
+		Rectangle rectTest = new Rectangle(200, 200, 50, 50);
+		rectTest.setFill(Paint.valueOf("yellow"));
+		rectTest.setStroke(Paint.valueOf("blue"));
+		rectTest.setOpacity(0.5);
+		rectTest.setRotate(45);
+		canvas.getChildren().add(rectTest);
 		
+		Text textTest = new Text(200, 100, "Hello World!");
+		textTest.setSize(30);
+		textTest.setOpacity(0.8);
+		textTest.setBold();
+		textTest.setItalic();
+		textTest.setUnderline();
+		textTest.setRotate(45);
+		canvas.getChildren().add(textTest);
 		
-		// TODO: Extract UI code into its own class and call that to set up the UI instead of FXML.
-		// Reason: I'm not familiar enough with FXML to take the time to test and fix the issues I'm having,
-		// considering the deadline.
-		//FXMLLoader fxml = new FXMLLoader(App.class.getResource("ui/app.fxml"));
-		//Scene scene = new Scene(fxml.load(), DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		//stage.setTitle(DEFAULT_TITLE);
-		//stage.setMinHeight(MINIMUM_HEIGHT);
-		//stage.setMinWidth(MINIMUM_WIDTH);
-		//stage.getIcons().add(new Image(DEFAULT_ICON));
-		//stage.setScene(scene);
-		//stage.show();
+		Line lineTest = new Line(100, 150, 200, 100);
+		lineTest.setStroke(Paint.valueOf("blue"));
+		lineTest.setStrokeWidth(5);
+		canvas.getChildren().add(lineTest);
 	}
 
 	public static void main(String[] args)

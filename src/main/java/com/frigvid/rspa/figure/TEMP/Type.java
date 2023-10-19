@@ -1,4 +1,4 @@
-package com.frigvid.rspa.figure;
+package com.frigvid.rspa.figure.TEMP;
 
 public enum Type
 {
