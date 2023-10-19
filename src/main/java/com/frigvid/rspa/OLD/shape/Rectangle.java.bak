@@ -1,0 +1,84 @@
+package com.frigvid.rspa.shape;
+
+import javafx.geometry.Point2D;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+
+public class Rectangle extends Figure
+{
+	private double width;
+	private double height;
+	
+	/**
+	 * Creates an empty instance of Rectangle.
+	 */
+	public Rectangle() {}
+	
+	public Rectangle(Point2D startX, Point2D startY)
+	{
+		super(startX, startY);
+		width = Math.abs(startX.getX() - startY.getX());
+		height = Math.abs(startX.getY() - startY.getY());
+	}
+	
+	public Rectangle(Point2D startX, Point2D startY, Color strokeColor)
+	{
+		super(startX, startY, strokeColor);
+		width = Math.abs(startX.getX() - startY.getX());
+		height = Math.abs(startX.getY() - startY.getY());
+	}
+	
+	@Override
+	protected void getPropMap()
+	{
+		super.getPropMap();
+		super.addPropToMap("Width", width);
+		super.addPropToMap("Height", height);
+	}
+	
+	@Override
+	protected void setPropMap()
+	{
+		super.setPropMap();
+		width = super.getPropFromMap("Width");
+		height = super.getPropFromMap("Height");
+	}
+	
+	/* Getters. */
+	public double getWidth()
+	{
+		return this.width;
+	}
+	
+	public double getHeight()
+	{
+		return this.height;
+	}
+	
+	/* Setters. */
+	public void setWidth(double width)
+	{
+		this.width = width;
+	}
+	
+	public void setHeight(double height)
+	{
+		this.height = height;
+	}
+	
+	@Override
+	public void draw(Pane pane)
+	{
+		Rectangle rectangle = new Rectangle();
+		rectangle.setStrokeColor(super.getStrokeColor());
+		rectangle.setFillColor(super.getFillColor());
+		//pane.getChildren().add(rectangle);
+		// Add rectangle to pane where clicked
+		//pane.setOnMouseClicked(event ->
+		//{
+		//	rectangle.setPosition(new Point2D(event.getX(), event.getY()));
+		//	pane.getChildren().add(rectangle);
+		//	pane.setOnMouseClicked(null); // Remove the listener to prevent multiple placements
+		//});
+	}
+}

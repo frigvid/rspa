@@ -1,6 +1,6 @@
-package com.frigvid.rspa.geometry.shapes;
+package com.frigvid.rspa.OLD.geometry.shapes;
 
-import com.frigvid.rspa.geometry.Shape;
+import com.frigvid.rspa.OLD.geometry.Shape;
 
 public class Text extends Shape
 {

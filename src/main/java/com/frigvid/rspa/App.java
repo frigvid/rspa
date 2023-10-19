@@ -1,10 +1,14 @@
 package com.frigvid.rspa;
 
+import com.frigvid.rspa.figure.Figure;
+import com.frigvid.rspa.figure.Type;
+import com.frigvid.rspa.figure.shape.Circle;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
 import java.io.IOException;
 
 public class App extends Application
@@ -20,14 +24,40 @@ public class App extends Application
 	@Override
 	public void start(Stage stage) throws IOException
 	{
-		FXMLLoader fxml = new FXMLLoader(App.class.getResource("ui/app.fxml"));
-		Scene scene = new Scene(fxml.load(), DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		BorderPane root = new BorderPane();
+		Pane canvas = new Pane();
+		//ListView<> sidebar = new ListView<>();
+		
+		root.setCenter(canvas);
+		//root.setRight(sidebar);
+		
+		Scene scene = new Scene(root, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		stage.setTitle(DEFAULT_TITLE);
 		stage.setMinHeight(MINIMUM_HEIGHT);
 		stage.setMinWidth(MINIMUM_WIDTH);
 		stage.getIcons().add(new Image(DEFAULT_ICON));
 		stage.setScene(scene);
 		stage.show();
+		
+		Figure circle = new Figure(Type.CIRCLE, 100, 50, 50);
+		canvas.getChildren().add(circle);
+		//circle.draw(canvas, circle);
+		
+		//Circle test = new Circle(100, 50, 50);
+		//canvas.getChildren().add(test);
+		
+		
+		// TODO: Extract UI code into its own class and call that to set up the UI instead of FXML.
+		// Reason: I'm not familiar enough with FXML to take the time to test and fix the issues I'm having,
+		// considering the deadline.
+		//FXMLLoader fxml = new FXMLLoader(App.class.getResource("ui/app.fxml"));
+		//Scene scene = new Scene(fxml.load(), DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		//stage.setTitle(DEFAULT_TITLE);
+		//stage.setMinHeight(MINIMUM_HEIGHT);
+		//stage.setMinWidth(MINIMUM_WIDTH);
+		//stage.getIcons().add(new Image(DEFAULT_ICON));
+		//stage.setScene(scene);
+		//stage.show();
 	}
 
 	public static void main(String[] args)

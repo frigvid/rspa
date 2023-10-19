@@ -1,4 +1,4 @@
-package com.frigvid.rspa.geometry;
+package com.frigvid.rspa.OLD.geometry;
 
 public class ShapeFactory {
 	

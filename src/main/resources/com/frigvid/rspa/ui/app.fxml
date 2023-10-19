@@ -2,8 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
@@ -16,7 +14,7 @@
 <AnchorPane stylesheets="@../css/app.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.frigvid.rspa.ui.AppController">
 	<BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 		<center>
-			<Pane id="canvas" fx:id="canvas" styleClass="canvas">
+			<Pane id="canvas" fx:id="canvas" prefHeight="500.0" prefWidth="500.0" styleClass="canvas">
 			</Pane>
 		</center>
 		<left>
@@ -25,8 +23,8 @@
 					<Button id="toolMove" fx:id="toolMove" disable="true" onAction="#tempTool" styleClass="toolbar-btn" text="Move" />
 					<Button id="toolSelect" fx:id="toolSelect" disable="true" onAction="#tempTool" styleClass="toolbar-btn" text="Select" />
 					<Button id="toolHand" fx:id="toolHand" disable="true" onAction="#tempTool" styleClass="toolbar-btn" text="Hand" />
-					<Button id="objectCircle" fx:id="objectCircle" disable="true" onAction="#tempTool" styleClass="toolbar-btn" text="Circle" />
-					<Button id="objectRectangle" fx:id="objectRectangle" disable="true" onAction="#tempTool" styleClass="toolbar-btn" text="Rectangle" />
+					<Button id="objectCircle" fx:id="objectCircle" onAction="#objectCircle" styleClass="toolbar-btn" text="Circle" />
+					<Button id="objectRectangle" fx:id="objectRectangle" onAction="#objectRectangle" styleClass="toolbar-btn" text="Rectangle" />
 					<Button id="objectLine" fx:id="objectLine" disable="true" onAction="#tempTool" styleClass="toolbar-btn" text="Line" />
 					<Button id="objectText" fx:id="objectText" onAction="#objectText" styleClass="toolbar-btn" text="Text" />
 					<Button id="toolDelete" fx:id="toolDelete" disable="true" onAction="#tempTool" styleClass="toolbar-btn" text="Delete" />
@@ -42,11 +40,11 @@
 					<Tab text="Objects">
 						<AnchorPane styleClass="tab-objects" />
 					</Tab>
-					<Tab text="Properties" disable="true">
+					<Tab disable="true" text="Properties">
 						<AnchorPane styleClass="tab-properties" />
 					</Tab>
-					<Tab text="History">
-						<AnchorPane styleClass="tab-history" disable="true" />
+					<Tab disable="true" text="History">
+						<AnchorPane styleClass="tab-history" />
 					</Tab>
 				</TabPane>
 			</Pane>

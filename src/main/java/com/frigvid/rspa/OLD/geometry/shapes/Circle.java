@@ -1,35 +1,35 @@
-package com.frigvid.rspa.geometry.shapes;
+package com.frigvid.rspa.OLD.geometry.shapes;
 
-import com.frigvid.rspa.geometry.Shape;
+import com.frigvid.rspa.OLD.geometry.Shape;
 
-public class Line extends Shape
+public class Circle extends Shape
 {
-	private double length;
+	private double radius;
 	
-	public Line (double length)
+	public Circle (double radius)
 	{
 		super();
-		this.length = length;
+		this.radius = radius;
 	}
 	
 	/* Getters. */
-	public double getLength()
+	public double getRadius()
 	{
-		return length;
+		return radius;
 	}
 	
 	/* Setters. */
-	public void setLength(double length)
+	public void setRadius(double radius)
 	{
-		this.length = length;
+		this.radius = radius;
 	}
 	
 	/* To string. */
 	@Override
 	public String toString()
 	{
-		return "Line{" +
-				"length=" + length +
+		return "Circle{" +
+				"radius=" + radius +
 				", rotation=" + rotation +
 				", opacity=" + opacity +
 				", colorBorder=" + colorBorder +

@@ -1,4 +1,4 @@
-package com.frigvid.rspa.object;
+package com.frigvid.rspa.OLD.object;
 
 import javafx.scene.paint.Color;
 

@@ -4,7 +4,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 
-public abstract class Shape extends javafx.scene.shape.Shape
+import java.util.Collection;
+
+public abstract class Shape
 {
 	protected double x;
 	protected double y;
@@ -30,10 +32,10 @@ public abstract class Shape extends javafx.scene.shape.Shape
 		return this.y;
 	}
 	
-	//public double getOpacity()
-	//{
-	//	return this.opacity;
-	//}
+	public double getOpacity()
+	{
+		return this.opacity;
+	}
 	
 	public Color getBorderColor()
 	{
@@ -55,6 +57,10 @@ public abstract class Shape extends javafx.scene.shape.Shape
 		return this.layer;
 	}
 	
+	protected Collection<Rotate> getTransforms()
+	{
+		return null;
+	}
 	
 	/* Setters. */
 	public void setX(double x)
@@ -67,10 +73,10 @@ public abstract class Shape extends javafx.scene.shape.Shape
 		this.y = y;
 	}
 	
-	//public void setOpacity(double opacity)
-	//{
-	//	this.opacity = opacity;
-	//}
+	public void setOpacity(double opacity)
+	{
+		this.opacity = opacity;
+	}
 	
 	public void setBorderColor(Color borderColor)
 	{
@@ -90,6 +96,16 @@ public abstract class Shape extends javafx.scene.shape.Shape
 	public void setLayer(int layer)
 	{
 		this.layer = layer;
+	}
+	
+	public void setFill(Color color)
+	{
+		this.fillColor = color;
+	}
+	
+	public void setStroke(Color color)
+	{
+		this.borderColor = color;
 	}
 	
 	public abstract void addToPane(Pane pane);

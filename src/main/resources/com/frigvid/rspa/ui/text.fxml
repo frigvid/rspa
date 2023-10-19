@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="163.0" prefWidth="230.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.frigvid.rspa.ui.fragment.TextController">
+<AnchorPane prefHeight="163.0" prefWidth="230.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.frigvid.rspa.ui.TextController">
 	<TextArea id="textArea" fx:id="textArea" layoutX="15.0" layoutY="15.0" prefHeight="100.0" prefWidth="200.0" promptText="Enter text here" wrapText="true" />
 	<Button id="textItalic" fx:id="textItalic" layoutX="15.0" layoutY="125.0" minWidth="23.0" onAction="#textItalic" prefHeight="25.0" text="I">
 		<font>
