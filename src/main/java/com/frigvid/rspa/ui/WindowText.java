@@ -9,19 +9,27 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-public class WindowText extends GUI {
+public class WindowText
+		extends GUI
+{
 	
-	public WindowText(Stage stage) {
+	public WindowText(Stage stage)
+	{
 		super(stage);
 	}
 	
 	@Override
-	public void initUI() {
+	public void initUI()
+	{
 		AnchorPane textUI = createUI();
 		canvas.getChildren().add(textUI);
 	}
 	
-	public AnchorPane createUI() {
+	// TODO: Split this method into multiple methods.
+	// NOTE: See WindowMain.java for example.
+	// NOTE: See Text.java for Italic, Bold and Underline examples.
+	public AnchorPane createUI()
+	{
 		AnchorPane root = new AnchorPane();
 		root.setPrefSize(230, 163);
 		
@@ -41,7 +49,7 @@ public class WindowText extends GUI {
 		textItalic.setPrefHeight(25);
 		textItalic.setFont(Font.font("System", FontPosture.ITALIC, 12));
 		textItalic.setOnAction(event -> {
-			// Implement the textItalic action here
+			// TODO: Call function that sets textArea to Italic.
 		});
 		
 		Button textBold = new Button("B");
@@ -50,7 +58,7 @@ public class WindowText extends GUI {
 		textBold.setLayoutY(125);
 		textBold.setFont(Font.font("System", FontWeight.BOLD, 12));
 		textBold.setOnAction(event -> {
-			// Implement the textBold action here
+			// TODO: Call function that sets textArea to Bold.
 		});
 		
 		Button textUnderline = new Button("U");
@@ -60,7 +68,7 @@ public class WindowText extends GUI {
 		textUnderline.setDisable(true);
 		textUnderline.setUnderline(true);
 		textUnderline.setOnAction(event -> {
-			// Implement the textUnderline action here
+			// TODO: Call function that sets textArea to Underline.
 		});
 		
 		Spinner spinner = new Spinner();
@@ -74,7 +82,7 @@ public class WindowText extends GUI {
 		textAdd.setLayoutX(177);
 		textAdd.setLayoutY(125);
 		textAdd.setOnAction(event -> {
-			// Implement the textAdd action here
+			// TODO: Call function that adds text to canvas, with transforms set.
 		});
 		
 		root.getChildren().addAll(textArea, textItalic, textBold, textUnderline, spinner, textAdd);

@@ -1,16 +1,14 @@
 package com.frigvid.rspa;
 
-import com.frigvid.rspa.figure.shape.Circle;
-import com.frigvid.rspa.figure.shape.Line;
-import com.frigvid.rspa.figure.shape.Rectangle;
-import com.frigvid.rspa.figure.shape.Text;
+import com.frigvid.rspa.figure.shape.*;
 import com.frigvid.rspa.ui.WindowMain;
 import javafx.application.Application;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
-public class App extends Application
+public class App
+		extends Application
 {
 	@Override
 	public void start(Stage stage)
@@ -26,6 +24,12 @@ public class App extends Application
 		circTest.setStroke(Paint.valueOf("green"));
 		circTest.setOpacity(0.5);
 		canvas.getChildren().add(circTest);
+		
+		Circle circTest2 = new Circle(115, 115, 25);
+		circTest2.setFill(Paint.valueOf("magenta"));
+		circTest2.setStroke(Paint.valueOf("red"));
+		circTest2.setOpacity(0.5);
+		canvas.getChildren().add(circTest2);
 		
 		Rectangle rectTest = new Rectangle(200, 200, 50, 50);
 		rectTest.setFill(Paint.valueOf("yellow"));
@@ -47,6 +51,21 @@ public class App extends Application
 		lineTest.setStroke(Paint.valueOf("blue"));
 		lineTest.setStrokeWidth(5);
 		canvas.getChildren().add(lineTest);
+		
+		/* TEST: CoolerCircle
+		CoolerCircle circTest2 = new CoolerCircle(300, 300, 25);
+		circTest2.setFill(Paint.valueOf("magenta"));
+		circTest2.setStroke(Paint.valueOf("green"));
+		circTest2.setOpacity(0.1);
+		System.out.println(circTest2.getType());
+		canvas.getChildren().add(circTest2.getNode());
+		System.out.println(circTest2.getClass().getSimpleName());
+		*/
+		
+		System.out.println(circTest.getClass().getSimpleName());
+		System.out.println(rectTest.getClass().getSimpleName());
+		System.out.println(textTest.getClass().getSimpleName());
+		System.out.println(lineTest.getClass().getSimpleName());
 	}
 
 	public static void main(String[] args)

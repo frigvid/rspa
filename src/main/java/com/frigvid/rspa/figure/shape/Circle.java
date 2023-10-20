@@ -12,4 +12,9 @@ public class Circle
 	{
 		super(centerX, centerY, radius);
 	}
+	
+	//public Type getType()
+	//{
+	//	return Type.CIRCLE;
+	//}
 }
