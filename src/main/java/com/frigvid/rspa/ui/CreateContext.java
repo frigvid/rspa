@@ -15,6 +15,20 @@ public class CreateContext
 {
 	InputValue newValue = new InputValue();
 	
+	/**
+	 * Create context menu for a shape.
+	 * <p/>
+	 * Example usage:
+	 * <pre>
+	 *     CreateContext context = new CreateContext();
+	 *     ContextMenu shapeContext = context.createShapeContext(shape, canvas, sidebar);
+	 * </pre>
+	 *
+	 * @param shape The shape to create context menu for.
+	 * @param canvas The canvas to draw on.
+	 * @param sidebar The sidebar to draw in.
+	 * @return The context menu.
+	 */
 	public ContextMenu createShapeContext(Shape shape, Pane canvas, ListView<HistoryStack.ShapeItem> sidebar)
 	{
 		ContextMenu shapeContext = new ContextMenu();
@@ -78,6 +92,17 @@ public class CreateContext
 		return shapeContext;
 	}
 	
+	/**
+	 * Create context menu for the canvas.
+	 * <p/>
+	 * Example usage:
+	 * <pre>
+	 *     CreateContext context = new CreateContext();
+	 *     ContextMenu canvasContext = context.createCanvasContext();
+	 * </pre>
+	 *
+	 * @return The context menu.
+	 */
 	public ContextMenu createCanvasContext(/* Shape shape, Pane canvas, ListView<HistoryStack.ShapeItem> sidebar */)
 	{
 		ContextMenu canvasContext = new ContextMenu();
@@ -238,18 +263,16 @@ public class CreateContext
 	 * @param shape The Text to change.
 	 * @return The menu item.
 	 */
-	private MenuItem instanceText(Shape shape) {
+	private MenuItem instanceText(Shape shape)
+	{
 		MenuItem changeText = new MenuItem("Change Text");
 		
 		changeText.setOnAction(e ->
 		{
 			Text text = (Text) shape;
-			//WindowText textUI = new WindowText(null);
-			//textUI.initUI();
-			
 			String initialText = text.getText();
 			//String newText = newValue.textInput("Change Text", "Enter new text:", initialText);
-			String newText = newValue.textInput("Change Text", "Enter new text:", initialText);
+			String newText = newValue.textInputAlt(initialText);
 			if (!Objects.equals(newText, initialText))
 			{
 				text.setText(newText);

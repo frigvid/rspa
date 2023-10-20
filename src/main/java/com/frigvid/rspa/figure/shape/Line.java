@@ -43,4 +43,11 @@ public class Line
 		setEndX(getStartX() + length * Math.cos(angle));
 		setEndY(getStartY() + length * Math.sin(angle));
 	}
+	
+	/* Mathematical function. Might be useful for something like setLength().
+	public double calculateAngle()
+	{
+		return Math.atan2(getEndY() - getStartY(), getEndX() - getStartX());
+	}
+	*/
 }

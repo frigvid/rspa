@@ -23,23 +23,53 @@ public abstract class GUI
 		this.stage = stage;
 	}
 	
-	public abstract void initUI();
+	public abstract void initialize();
 	
-	public Stage getStage()
-	{
-		return stage;
-	}
-	
+	/**
+	 * Get the root BorderPane. Useful if you want to add a Node to the root,
+	 * but you don't have access to the root BorderPane for some reason.
+	 * <p/>
+	 * Example usage:
+	 * <pre>
+	 *     WindowMain windowMain = new WindowMain(stage);
+	 *     BorderPane root = windowMain.getRoot();
+	 * </pre>
+	 *
+	 * @return The root BorderPane.
+	 */
 	public BorderPane getRoot()
 	{
 		return root;
 	}
 	
+	/**
+	 * Get the canvas Pane. Useful if you want to add a Shape to the canvas,
+	 * but you don't have access to the canvas Pane through inheritance.
+	 * <p/>
+	 * Example usage:
+	 * <pre>
+	 *     WindowMain windowMain = new WindowMain(stage);
+	 *     Pane canvas = windowMain.getCanvas();
+	 * </pre>
+	 *
+	 * @return The canvas Pane.
+	 */
 	public Pane getCanvas()
 	{
 		return canvas;
 	}
 	
+	/**
+	 * Move figure to front of canvas.
+	 * <p/>
+	 * Example usage:
+	 * <pre>
+	 *     moveFigureToFront(shape, canvas);
+	 * </pre>
+	 *
+	 * @param shape The Shape to move.
+	 * @param root The Pane to move the shape in.
+	 */
 	protected void moveFigureToFront(Shape shape, Pane root)
 	{
 		//shape.toFront();
@@ -48,12 +78,34 @@ public abstract class GUI
 		//root.getChildren().add(shape);
 	}
 	
+	/**
+	 * Move figure to back of canvas.
+	 * <p/>
+	 * Example usage:
+	 * <pre>
+	 *     moveFigureToBack(shape, canvas);
+	 * </pre>
+	 *
+	 * @param shape The Shape to move.
+	 * @param root The Pane to move the shape in.
+	 */
 	protected void moveFigureToBack(Shape shape, Pane root)
 	{
 		root.getChildren().remove(shape);
 		root.getChildren().add(0, shape);
 	}
 	
+	/**
+	 * Move figure forward by one.
+	 * <p/>
+	 * Example usage:
+	 * <pre>
+	 *     moveFigureForwardByOne(shape, canvas);
+	 * </pre>
+	 *
+	 * @param shape The Shape to move.
+	 * @param root The Pane to move the shape in.
+	 */
 	protected void moveFigureForwardByOne(Shape shape, Pane root)
 	{
 		int idx = root.getChildren().indexOf(shape);
@@ -63,6 +115,17 @@ public abstract class GUI
 		}
 	}
 	
+	/**
+	 * Move figure backward by one.
+	 * <p/>
+	 * Example usage:
+	 * <pre>
+	 *     moveFigureBackwardByOne(shape, canvas);
+	 * </pre>
+	 *
+	 * @param shape The Shape to move.
+	 * @param root The Pane to move the shape in.
+	 */
 	protected void moveFigureBackwardByOne(Shape shape, Pane root)
 	{
 		int idx = root.getChildren().indexOf(shape);

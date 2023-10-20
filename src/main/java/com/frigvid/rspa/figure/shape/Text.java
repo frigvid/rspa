@@ -1,6 +1,7 @@
 package com.frigvid.rspa.figure.shape;
 
 import com.frigvid.rspa.IFigure;
+import javafx.scene.control.TextArea;
 import javafx.scene.text.Font;
 
 public class Text
@@ -64,5 +65,28 @@ public class Text
 	{
 		isUnderlined = !isUnderlined;
 		setStyle();
+	}
+	
+	public void getPlainText()
+	{
+		String text = this.getText();
+	}
+	
+	public void getTextWithStyle(TextArea textArea)
+	{
+		String text = textArea.getText();
+		//Text drawableText = new Text(text);
+		
+		if (isBold)
+		{
+			text = "<b>" + text + "</b>";
+			//drawableText.setFontWeight(FontWeight.BOLD);
+		}
+		
+		if (isItalic)
+		{
+			text = "<i>" + text + "</i>";
+			//drawableText.setFontStyle(FontPosture.ITALIC);
+		}
 	}
 }

@@ -14,7 +14,7 @@ public class App
 	public void start(Stage stage)
 	{
 		WindowMain mainUI = new WindowMain(stage);
-		mainUI.initUI();
+		mainUI.initialize();
 		
 		// TEST: Adding shapes to canvas.
 		Pane canvas = mainUI.getCanvas();

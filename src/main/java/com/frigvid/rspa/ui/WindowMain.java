@@ -12,6 +12,8 @@ import javafx.stage.Stage;
 public class WindowMain
 		extends GUI
 {
+	/* Used to check if user is trying to drag a shape,
+	 * as opposed to interact with it. */
 	boolean isDragging = false;
 	CreateContext context = new CreateContext();
 	
@@ -20,8 +22,18 @@ public class WindowMain
 		super(stage);
 	}
 	
+	/**
+	 * Initialize the UI. Add any code here that
+	 * needs to be run when the Primary UI is created.
+	 * <p/>
+	 * Example usage:
+	 * <pre>
+	 *     WindowMain windowMain = new WindowMain(stage);
+	 *     windowMain.initialize();
+	 * </pre>
+	 */
 	@Override
-	public void initUI()
+	public void initialize()
 	{
 		windowMain();
 		// TODO: Move canvas code into canvas() method.
@@ -30,6 +42,15 @@ public class WindowMain
 		// TODO: Call canvas() and sidebar() methods from initUI() method.
 	}
 	
+	/**
+	 * This method currently contains the primary UI code,
+	 * however, it will eventually be split into their own
+	 * methods once the code base has matured a bit more.
+	 * <p/>
+	 * Essentially, this method is useful for prototyping
+	 * and testing, but isn't really optimal for production
+	 * in my opinion.
+	 */
 	private void windowMain()
 	{
 		root = new BorderPane();
@@ -67,7 +88,6 @@ public class WindowMain
 			{
 				ContextMenu canvasContext = context.createCanvasContext();
 				canvasContext.show(canvas, event.getScreenX(), event.getScreenY());
-				System.out.println("HAHAHAHAHAHHAHAHHAHAHAHAHAHAHAHAHAHAHAHAHAHHAHAHAHA");
 			}
 			
 			event.consume();
@@ -90,6 +110,19 @@ public class WindowMain
 	{
 	}
 	
+	/**
+	 * Work in progress handler method to deal with the different
+	 * type of interactions a user may have with a shape.
+	 * <p/>
+	 * Example usage:
+	 * <pre>
+	 *     WindowMain windowMain = new WindowMain(stage);
+	 *     windowMain.mouseEventHandler(event, shape);
+	 * </pre>
+	 *
+	 * @param event The mouse event.
+	 * @param shape The shape.
+	 */
 	private void mouseEventHandler(MouseEvent event, Shape shape)
 	{
 		/*
