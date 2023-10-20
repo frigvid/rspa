@@ -14,6 +14,7 @@ module com.frigvid.rspa {
     exports com.frigvid.rspa;
     //exports com.frigvid.rspa.ui;
     opens com.frigvid.rspa.ui to javafx.fxml;
+	exports com.frigvid.rspa.ui;
 	//exports com.frigvid.rspa.ui.fragment;
     //opens com.frigvid.rspa.ui.fragment to javafx.fxml;
 }
