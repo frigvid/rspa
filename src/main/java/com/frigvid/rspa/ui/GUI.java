@@ -23,6 +23,21 @@ public abstract class GUI {
 	
 	public abstract void initUI();
 	
+	public Stage getStage()
+	{
+		return stage;
+	}
+	
+	public BorderPane getRoot()
+	{
+		return root;
+	}
+	
+	public Pane getCanvas()
+	{
+		return canvas;
+	}
+	
 	protected void moveFigureToFront(Shape shape, Pane root) {
 		root.getChildren().remove(shape);
 		root.getChildren().add(shape);
