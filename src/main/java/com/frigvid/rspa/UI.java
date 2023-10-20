@@ -1,4 +1,4 @@
-package com.frigvid.rspa.ui;
+package com.frigvid.rspa;
 
 import com.frigvid.rspa.App;
 import com.frigvid.rspa.figure.shape.Circle;
@@ -20,7 +20,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-public abstract class UI
+public class UI
 {
 	private static final String DEFAULT_TITLE = "RSPA";
 	private static final String DEFAULT_ICON = String.valueOf(App.class.getResource("icon/logo.png"));
@@ -33,13 +33,7 @@ public abstract class UI
 	private BorderPane root;
 	private Pane canvas;
 	
-	public UI(Stage stage)
-	{
-		this.stage = stage;
-	}
-	
-	public createUI()
-	{
+	public UI(Stage stage) {
 		this.stage = stage;
 	}
 	
