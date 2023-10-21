@@ -1,5 +1,7 @@
 package com.frigvid.rspa.figure.shape;
 
+import com.frigvid.rspa.figure.IFigure;
+import com.frigvid.rspa.figure.ShapeDragHandler;
 import javafx.scene.Cursor;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Font;
@@ -19,7 +21,20 @@ public class Text
 	public Text(double x, double y, String text)
 	{
 		super(x, y, text);
-		changeCursorOnHover();
+		
+		/* Enable dragging of any Text shape. */
+		ShapeDragHandler dragHandler = new ShapeDragHandler(this);
+		dragHandler.enableDrag();
+	}
+	
+	public Text(double x, double y, String text, double fontSize)
+	{
+		super(x, y, text);
+		this.setFont(new Font(fontSize));
+		
+		/* Enable dragging of any Text shape. */
+		ShapeDragHandler dragHandler = new ShapeDragHandler(this);
+		dragHandler.enableDrag();
 	}
 	
 	/**
@@ -182,6 +197,7 @@ public class Text
 		return this.getFont().getSize();
 	}
 	
+	// TEMPORARY?
 	public void getTextWithStyle(TextArea textArea)
 	{
 		String text = textArea.getText();
@@ -198,19 +214,5 @@ public class Text
 			text = "<i>" + text + "</i>";
 			//drawableText.setFontStyle(FontPosture.ITALIC);
 		}
-	}
-	
-	/**
-	 * Change the cursor to a hand when hovering over the text.
-	 * <p/>
-	 * Use it in the constructor.
-	 * <p/>
-	 * TODO: Move this to an abstract superclass, or less
-	 * 		 optimally, a utility class.
-	 */
-	private void changeCursorOnHover()
-	{
-		this.setOnMouseEntered(event -> this.setCursor(Cursor.HAND));
-		this.setOnMouseExited(event -> this.setCursor(Cursor.DEFAULT));
 	}
 }

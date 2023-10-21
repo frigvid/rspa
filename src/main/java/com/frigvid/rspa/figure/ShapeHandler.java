@@ -1,4 +1,4 @@
-package com.frigvid.rspa.figure.shape;
+package com.frigvid.rspa.figure;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;

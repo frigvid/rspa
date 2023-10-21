@@ -1,5 +1,7 @@
 package com.frigvid.rspa.figure.shape;
 
+import com.frigvid.rspa.figure.IFigure;
+import com.frigvid.rspa.figure.ShapeDragHandler;
 import javafx.scene.Cursor;
 
 // TODO: Implement abstract wrapper class for Shapes and use that instead of extending it directly.
@@ -12,7 +14,44 @@ public class Line
 	public Line(double startX, double startY, double endX, double endY)
 	{
 		super(startX, startY, endX, endY);
-		changeCursorOnHover();
+		
+		/* Enable dragging of any Line shape. */
+		ShapeDragHandler dragHandler = new ShapeDragHandler(this);
+		dragHandler.enableDrag();
+	}
+	
+	/**
+	 * Set the x and y coordinates of the line.
+	 * <p/>
+	 * Example usage:
+	 * <pre>
+	 *     Line line = new Line();
+	 *     line.setPosition(10, 10);
+	 * </pre>
+	 *
+	 * @param x The x coordinate of the line.
+	 */
+	public void setX(double x)
+	{
+		setStartX(x);
+		setEndX(x);
+	}
+	
+	/**
+	 * Set the x and y coordinates of the line.
+	 * <p/>
+	 * Example usage:
+	 * <pre>
+	 *     Line line = new Line();
+	 *     line.setPosition(10, 10);
+	 * </pre>
+	 *
+	 * @param y The y coordinate of the line.
+	 */
+	public void setY(double y)
+	{
+		setStartY(y);
+		setEndY(y);
 	}
 	
 	/**
@@ -44,20 +83,6 @@ public class Line
 		double angle = Math.atan2(getEndY() - getStartY(), getEndX() - getStartX());
 		setEndX(getStartX() + length * Math.cos(angle));
 		setEndY(getStartY() + length * Math.sin(angle));
-	}
-	
-	/**
-	 * Change the cursor to a hand when hovering over the text.
-	 * <p/>
-	 * Use it in the constructor.
-	 * <p/>
-	 * TODO: Move this to an abstract superclass, or less
-	 * 		 optimally, a utility class.
-	 */
-	private void changeCursorOnHover()
-	{
-		this.setOnMouseEntered(event -> this.setCursor(Cursor.HAND));
-		this.setOnMouseExited(event -> this.setCursor(Cursor.DEFAULT));
 	}
 	
 	/* Mathematical function. Might be useful for something like setLength().

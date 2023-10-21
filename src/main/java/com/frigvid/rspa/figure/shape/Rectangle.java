@@ -1,6 +1,12 @@
 package com.frigvid.rspa.figure.shape;
 
+import com.frigvid.rspa.figure.IFigure;
+import com.frigvid.rspa.figure.ShapeDragHandler;
+import com.frigvid.rspa.history.MoveShape;
 import javafx.scene.Cursor;
+import javafx.scene.layout.Pane;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 // TODO: Implement abstract wrapper class for Shapes and use that instead of extending it directly.
 public class Rectangle
@@ -12,7 +18,10 @@ public class Rectangle
 	public Rectangle(double x, double y, double width, double height)
 	{
 		super(x, y, width, height);
-		changeCursorOnHover();
+		
+		/* Enable dragging of any Rectangle shape. */
+		ShapeDragHandler dragHandler = new ShapeDragHandler(this);
+		dragHandler.enableDrag();
 	}
 	
 	/**
@@ -37,20 +46,6 @@ public class Rectangle
 	{
 		this.setX(x);
 		this.setY(y);
-	}
-	
-	/**
-	 * Change the cursor to a hand when hovering over the text.
-	 * <p/>
-	 * Use it in the constructor.
-	 * <p/>
-	 * TODO: Move this to an abstract superclass, or less
-	 * 		 optimally, a utility class.
-	 */
-	private void changeCursorOnHover()
-	{
-		this.setOnMouseEntered(event -> this.setCursor(Cursor.HAND));
-		this.setOnMouseExited(event -> this.setCursor(Cursor.DEFAULT));
 	}
 	
 	/* Mathematical functions. Very pointless though, so commented out until further notice.

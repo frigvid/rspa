@@ -1,5 +1,7 @@
 package com.frigvid.rspa.figure.shape;
 
+import com.frigvid.rspa.figure.IFigure;
+import com.frigvid.rspa.figure.ShapeDragHandler;
 import javafx.scene.Cursor;
 
 // TODO: Implement abstract wrapper class for Shapes and use that instead of extending it directly.
@@ -12,21 +14,10 @@ public class Circle
 	public Circle(double centerX, double centerY, double radius)
 	{
 		super(centerX, centerY, radius);
-		changeCursorOnHover();
-	}
-	
-	/**
-	 * Change the cursor to a hand when hovering over the text.
-	 * <p/>
-	 * Use it in the constructor.
-	 * <p/>
-	 * TODO: Move this to an abstract superclass, or less
-	 * 		 optimally, a utility class.
-	 */
-	private void changeCursorOnHover()
-	{
-		this.setOnMouseEntered(event -> this.setCursor(Cursor.HAND));
-		this.setOnMouseExited(event -> this.setCursor(Cursor.DEFAULT));
+		
+		/* Enable dragging of any Circle shape. */
+		ShapeDragHandler dragHandler = new ShapeDragHandler(this);
+		dragHandler.enableDrag();
 	}
 	
 	// TESTING

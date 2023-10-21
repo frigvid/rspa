@@ -94,7 +94,7 @@
             <!-- Default configuration for running with: mvn clean javafx:run -->
             <id>default-cli</id>
             <configuration>
-              <mainClass>com.frigvid.rspa/com.frigvid.rspa.App</mainClass>
+              <mainClass>com.frigvid.rspa/com.frigvid.rspa.Main</mainClass>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
               <jlinkImageName>app</jlinkImageName>

@@ -1,19 +1,19 @@
 package com.frigvid.rspa;
 
 import com.frigvid.rspa.figure.shape.*;
-import com.frigvid.rspa.ui.WindowMain;
+import com.frigvid.rspa.ui.App;
 import javafx.application.Application;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
-public class App
+public class Main
 		extends Application
 {
 	@Override
 	public void start(Stage stage)
 	{
-		WindowMain mainUI = new WindowMain(stage);
+		App mainUI = new App(stage);
 		mainUI.initialize();
 		
 		// TEST: Adding shapes to canvas.
@@ -22,7 +22,7 @@ public class App
 		Circle circTest = new Circle(100, 100, 25);
 		circTest.setFill(Paint.valueOf("red"));
 		circTest.setStroke(Paint.valueOf("green"));
-		circTest.setOpacity(0.5);
+		//circTest.setOpacity(0.5);
 		canvas.getChildren().add(circTest);
 		
 		Circle circTest2 = new Circle(115, 115, 25);

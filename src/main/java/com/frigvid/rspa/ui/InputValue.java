@@ -19,6 +19,18 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * This class handles input of values.
+ * <p/>
+ * Example usage:
+ * <pre>
+ *     InputValue newValue = new InputValue();
+ *     double value = newValue.numberInput("Change Radius", "Enter new radius:", initialRadius);
+ * </pre>
+ * TODO: Fix discrepancy between the textInputAlt TextArea and actual Text Shape.
+ * 		 Currently there's some weird behavior going on that's causing the style
+ * 		 to not be set properly.
+ */
 public class InputValue
 {
 	/**
@@ -48,16 +60,13 @@ public class InputValue
 		{
 			if (!event.getCharacter().matches("[0-9.]"))
 			{
-				event.consume(); // Omnom.
+				event.consume();
 			}
 		});
 		
 		// Close dialog when focus is lost.
 		return ifFocusLost(initialValue, dialog);
 	}
-	
-	
-	
 	
 	public Text textInputAlt(Text initialText)
 	{
@@ -83,7 +92,7 @@ public class InputValue
 		Button textItalic = new Button("I");
 		Button textBold = new Button("B");
 		Button textUnderline = new Button("U");
-		Spinner<Double> spinner = new Spinner<>(10, 100, initialText.getSize()); // Min, max, inital value.
+		Spinner<Double> spinner = new Spinner<>(10, 100, initialText.getSize()); // Min, max, initial value.
 		Button textAdd = new Button("Add");
 		
 		/* Initialize values. */
@@ -217,9 +226,22 @@ public class InputValue
 	private void updateTextShape(Text initialText, Stage stage, TextArea textArea, AtomicBoolean italic, AtomicBoolean bold, AtomicBoolean underline)
 	{
 		initialText.setText(textArea.getText());
-		if (italic.get()) {initialText.setItalic();}
-		if (bold.get()) {initialText.setBold();}
-		if (underline.get()) {initialText.setUnderline();}
+		
+		if (italic.get())
+		{
+			initialText.setItalic();
+		}
+		
+		if (bold.get())
+		{
+			initialText.setBold();
+		}
+		
+		if (underline.get())
+		{
+			initialText.setUnderline();
+		}
+		
 		initialText.setStyle();
 		stage.close();
 	}
@@ -259,7 +281,7 @@ public class InputValue
 		Stage stage = new Stage();
 		AnchorPane root = new AnchorPane();
 		
-		/* Lamda final requirement workaround.
+		/* Lambda final requirement workaround.
 		 * Default value set to initialString to avoid some niche edge-cases. */
 		final String[] result = {initialString};
 		
@@ -437,7 +459,7 @@ public class InputValue
 		{
 			try
 			{
-				return (T) (Double) result.map(Double::parseDouble).orElse((Double) initialValue);
+				return (T) result.map(Double::parseDouble).orElse((Double) initialValue);
 			}
 			catch (NumberFormatException e)
 			{

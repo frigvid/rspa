@@ -14,4 +14,6 @@ module com.frigvid.rspa {
 	opens com.frigvid.rspa.history to javafx.fxml;
     exports com.frigvid.rspa.figure.shape;
     opens com.frigvid.rspa.figure.shape to javafx.fxml;
+	exports com.frigvid.rspa.figure;
+	opens com.frigvid.rspa.figure to javafx.fxml;
 }

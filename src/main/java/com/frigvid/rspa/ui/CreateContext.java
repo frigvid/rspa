@@ -2,19 +2,17 @@ package com.frigvid.rspa.ui;
 
 import com.frigvid.rspa.figure.shape.Line;
 import com.frigvid.rspa.figure.shape.Rectangle;
-import com.frigvid.rspa.figure.shape.ShapeHandler;
+import com.frigvid.rspa.figure.ShapeHandler;
 import com.frigvid.rspa.figure.shape.Text;
-import com.frigvid.rspa.history.HistoryStack;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 public class CreateContext
@@ -51,18 +49,30 @@ public class CreateContext
 		MenuItem moveBackwardByOne = new MenuItem("Send Backward by One");
 		MenuItem delete = new MenuItem("Delete");
 		
-		// TODO: Implement strokeColor.setOnAction(event -> {});
-		// TODO: Implement fillColor.setOnAction(event -> {});
-		// TODO: Implement moveToFront.setOnAction(event -> {});
-		//moveToFront.setOnAction(event -> moveFigureToFront(shape, canvas));
-		// TODO: Implement moveToBack.setOnAction(event -> {});
-		// TODO: Implement moveForwardByOne.setOnAction(event -> {});
-		// TODO: Implement moveBackwardByOne.setOnAction(event -> {});
-		// TODO: Implement delete.setOnAction(event -> {});
 		// TODO: Check shape type.
 		
 		strokeColor.setOnAction(event -> shapeHandler.setStrokeColor(shape, newValue.colorPicker((Color) shape.getStroke())));
 		fillColor.setOnAction(event -> shapeHandler.setFillColor(shape, newValue.colorPicker((Color) shape.getFill())));
+		moveToFront.setOnAction(event -> shape.toFront());
+		moveToBack.setOnAction(event -> shape.toBack());
+		moveForwardByOne.setOnAction(event ->
+		{
+			int index = canvas.getChildren().indexOf(shape);
+			if (index < canvas.getChildren().size() - 1)
+			{
+				canvas.getChildren().remove(shape);
+				canvas.getChildren().add(index + 1, shape);
+			}
+		});
+		moveBackwardByOne.setOnAction(event ->
+		{
+			int index = canvas.getChildren().indexOf(shape);
+			if (index > 0)
+			{
+				canvas.getChildren().remove(shape);
+				canvas.getChildren().add(index - 1, shape);
+			}
+		});
 		delete.setOnAction(event -> shapeHandler.deleteShape(shape, canvas));
 		
 		// NOTE: Alternatively use if (shape instanceof Line) {}.
@@ -142,7 +152,7 @@ public class CreateContext
 	 * @param scene The scene used to set up listeners for closing the context menu.
 	 * @return The context menu.
 	 */
-	public ContextMenu createCanvasContext(Scene scene)
+	public ContextMenu createCanvasContext(Scene scene, Pane canvas)
 	{
 		ContextMenu canvasContext = new ContextMenu();
 		
@@ -152,10 +162,82 @@ public class CreateContext
 		MenuItem shapeRectangle = new MenuItem("Draw Rectangle");
 		MenuItem shapeText = new MenuItem("Draw Text");
 		
-		// TODO: Implement shapeCircle.setOnAction(event -> {});
-		// TODO: Implement shapeLine.setOnAction(event -> {});
-		// TODO: Implement shapeRectangle.setOnAction(event -> {});
-		// TODO: Implement shapeText.setOnAction(event -> {});
+		// TODO: Enable user to preset radius through the sidebar.
+		shapeCircle.setOnAction(event ->
+			canvas.setOnMouseClicked(eventCircle ->
+				{
+					if (eventCircle.getButton() == MouseButton.PRIMARY)
+					{
+						System.out.println("Circle: " + eventCircle.getX() + ", " + eventCircle.getY());
+						Circle circle = new Circle(eventCircle.getX(), eventCircle.getY(), 25);
+						canvas.getChildren().add(circle);
+						//canvas.setOnMouseClicked(null); // Uncomment to require a new click for each circle.
+					}
+				}));
+		
+		// TODO: Enable user to preset width through the sidebar.
+		shapeLine.setOnAction(event ->
+		{
+			final Double[] startX = {null};
+			final Double[] startY = {null};
+			
+			canvas.setOnMouseClicked(eventLine ->
+			{
+				if (eventLine.getButton() == MouseButton.PRIMARY)
+				{
+					if (startX[0] == null)
+					{
+						startX[0] = eventLine.getX();
+						startY[0] = eventLine.getY();
+					} else
+					{
+						System.out.println("Line: " + startX[0] + ", " + startY[0] + ", " + eventLine.getX() + ", " + eventLine.getY());
+						Line line = new Line(startX[0], startY[0], eventLine.getX(), eventLine.getY());
+						line.setStrokeWidth(5);
+						canvas.getChildren().add(line);
+						startX[0] = null;
+						startY[0] = null;
+						//canvas.setOnMouseClicked(null); // Uncomment to require a new click for each circle.
+					}
+				}
+			});
+		});
+		
+		// TODO: Enable user to preset width and height through the sidebar.
+		shapeRectangle.setOnAction(event ->
+		{
+			final Double[] width = {50.0};
+			final Double[] height = {50.0};
+			
+			canvas.setOnMouseClicked(eventRectangle ->
+			{
+				if (eventRectangle.getButton() == MouseButton.PRIMARY)
+				{
+					System.out.println("Rectangle: " + eventRectangle.getX() + ", " + eventRectangle.getY());
+					Rectangle rectangle = new Rectangle(eventRectangle.getX(), eventRectangle.getY(), width[0], height[0]);
+					canvas.getChildren().add(rectangle);
+					//canvas.setOnMouseClicked(null); // Uncomment to require a new click for each rectangle.
+				}
+			});
+		});
+		
+		// TODO: Enable user to preset text through the sidebar.
+		shapeText.setOnAction(event ->
+		{
+			//Text newText = newValue.textInputAlt(null);
+			final Double[] size = {12.0};
+			
+			canvas.setOnMouseClicked(eventText ->
+			{
+				if (eventText.getButton() == MouseButton.PRIMARY)
+				{
+					System.out.println("Text: " + eventText.getX() + ", " + eventText.getY());
+					Text text = new Text(eventText.getX(), eventText.getY(), "Text", size[0]);
+					canvas.getChildren().add(text);
+					//canvas.setOnMouseClicked(null); // Uncomment to require a new click for each text.
+				}
+			});
+		});
 		
 		canvasContext.getItems().addAll(
 				shapeCircle,
@@ -303,6 +385,7 @@ public class CreateContext
 		return changeWidth;
 	}
 	
+	// TODO: Clean up method.
 	/**
 	 * Instance menu item for changing text.
 	 * <p/>
@@ -326,9 +409,22 @@ public class CreateContext
 			{
 				text.setText(newText.getText());
 				text.setSize(newText.getSize());
-				if (newText.isBold()) {text.setBold();}
-				if (newText.isItalic()) {text.setItalic();}
-				if (newText.isUnderlined()) {text.setUnderline();}
+				
+				if (newText.isBold())
+				{
+					text.setBold();
+				}
+				
+				if (newText.isItalic())
+				{
+					text.setItalic();
+				}
+				
+				if (newText.isUnderlined())
+				{
+					text.setUnderline();
+				}
+				
 				//ChangeShapeSizeCommand cmd = new ChangeShapeSizeCommand(rectangle, initialWidth, rectangle.getHeight(), 0);
 				//cmd.setNewSize(newWidth, rectangle.getHeight(), 0);
 				//undoStack.push(cmd);
