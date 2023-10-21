@@ -8,13 +8,10 @@ module com.frigvid.rspa {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
 
-    //exports com.frigvid.rspa.test;
-    //exports com.frigvid.rspa.figure;
     opens com.frigvid.rspa to javafx.fxml;
     exports com.frigvid.rspa;
 	exports com.frigvid.rspa.history;
 	opens com.frigvid.rspa.history to javafx.fxml;
-	//exports com.frigvid.rspa.ui;
-	//exports com.frigvid.rspa.ui.fragment;
-    //opens com.frigvid.rspa.ui.fragment to javafx.fxml;
+    exports com.frigvid.rspa.figure.shape;
+    opens com.frigvid.rspa.figure.shape to javafx.fxml;
 }

@@ -1,4 +1,4 @@
-package com.frigvid.rspa;
+package com.frigvid.rspa.figure.shape;
 
 public interface IFigure
 {

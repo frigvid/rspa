@@ -2,18 +2,26 @@ package com.frigvid.rspa.ui;
 
 import com.frigvid.rspa.figure.shape.Line;
 import com.frigvid.rspa.figure.shape.Rectangle;
+import com.frigvid.rspa.figure.shape.ShapeHandler;
 import com.frigvid.rspa.figure.shape.Text;
 import com.frigvid.rspa.history.HistoryStack;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class CreateContext
 {
 	InputValue newValue = new InputValue();
+	ShapeHandler shapeHandler = new ShapeHandler();
+	private ContextMenu openContext;
 	
 	/**
 	 * Create context menu for a shape.
@@ -26,16 +34,17 @@ public class CreateContext
 	 *
 	 * @param shape The shape to create context menu for.
 	 * @param canvas The canvas to draw on.
-	 * @param sidebar The sidebar to draw in.
+	 * @param scene The scene used to set up listeners for closing the context menu.
 	 * @return The context menu.
 	 */
-	public ContextMenu createShapeContext(Shape shape, Pane canvas, ListView<HistoryStack.ShapeItem> sidebar)
+	public ContextMenu createShapeContext(Shape shape, Pane canvas, Scene scene)
 	{
 		ContextMenu shapeContext = new ContextMenu();
 		
 		/* Define shared menu items. */
 		MenuItem strokeColor = new MenuItem("Change Stroke Color");
 		MenuItem fillColor = new MenuItem("Change Fill Color");
+		MenuItem changeOpacity = new MenuItem("Change Opacity");
 		MenuItem moveToFront = new MenuItem("Bring to Front");
 		MenuItem moveToBack = new MenuItem("Send to Back");
 		MenuItem moveForwardByOne = new MenuItem("Bring Forward by One");
@@ -52,7 +61,9 @@ public class CreateContext
 		// TODO: Implement delete.setOnAction(event -> {});
 		// TODO: Check shape type.
 		
-		// TODO: Remove context menu if focus is lost.
+		strokeColor.setOnAction(event -> shapeHandler.setStrokeColor(shape, newValue.colorPicker((Color) shape.getStroke())));
+		fillColor.setOnAction(event -> shapeHandler.setFillColor(shape, newValue.colorPicker((Color) shape.getFill())));
+		delete.setOnAction(event -> shapeHandler.deleteShape(shape, canvas));
 		
 		// NOTE: Alternatively use if (shape instanceof Line) {}.
 		switch ((shape.getClass().getSimpleName()).toUpperCase()) {
@@ -75,11 +86,38 @@ public class CreateContext
 				break;
 		}
 		
-		// TODO: Split context menu into canvas context menu and shape context menu.
+		/* Closes the shape context menu if
+		 * another context menu of the same type is opened.
+		 *
+		 * Together with the similar event in createCanvasContext,
+		 * it essentially allows for only one context menu to be
+		 * open at any time. */
+		shapeContext.setOnShowing(event ->
+		{
+			ifContextExternalClick(scene);
+			closeContextIfOpen();
+			openContext = shapeContext;
+		});
+		
+		/* Start adding remaining MenuItems to the ContextMenu. */
 		shapeContext.getItems().addAll(
 				new SeparatorMenuItem(),
-				strokeColor,
-				fillColor,
+				strokeColor
+		);
+		
+		/* Only add fill color menu item if shape is not a line.
+		 *
+		 * I'd prefer to not split up "addAll()" method like this,
+		 * however, it's the easiest way to add or remove this
+		 * MenuItem and add it to the correct place in the ContextMenu. */
+		if (!(shape instanceof Line))
+		{
+			shapeContext.getItems().add(fillColor);
+		}
+		
+		/* Finish adding remaining MenuItems to the ContextMenu. */
+		shapeContext.getItems().addAll(
+				changeOpacity,
 				new SeparatorMenuItem(),
 				moveToFront,
 				moveToBack,
@@ -101,9 +139,10 @@ public class CreateContext
 	 *     ContextMenu canvasContext = context.createCanvasContext();
 	 * </pre>
 	 *
+	 * @param scene The scene used to set up listeners for closing the context menu.
 	 * @return The context menu.
 	 */
-	public ContextMenu createCanvasContext(/* Shape shape, Pane canvas, ListView<HistoryStack.ShapeItem> sidebar */)
+	public ContextMenu createCanvasContext(Scene scene)
 	{
 		ContextMenu canvasContext = new ContextMenu();
 		
@@ -118,15 +157,25 @@ public class CreateContext
 		// TODO: Implement shapeRectangle.setOnAction(event -> {});
 		// TODO: Implement shapeText.setOnAction(event -> {});
 		
-		// TODO: Remove context menu if focus is lost.
-		
-		// TODO: Split context menu into canvas context menu and shape context menu.
 		canvasContext.getItems().addAll(
 				shapeCircle,
 				shapeLine,
 				shapeRectangle,
 				shapeText
 		);
+		
+		/* Closes the canvas context menu if
+		 * another context menu of the same type is opened.
+		 *
+		 * Together with the similar event in createShapeContext,
+		 * it essentially allows for only one context menu to be
+		 * open at any time. */
+		canvasContext.setOnShowing(event ->
+		{
+			ifContextExternalClick(scene);
+			closeContextIfOpen();
+			openContext = canvasContext;
+		});
 		
 		return canvasContext;
 	}
@@ -270,12 +319,16 @@ public class CreateContext
 		changeText.setOnAction(e ->
 		{
 			Text text = (Text) shape;
-			String initialText = text.getText();
+			//String initialText = text.getText();
 			//String newText = newValue.textInput("Change Text", "Enter new text:", initialText);
-			String newText = newValue.textInputAlt(initialText);
-			if (!Objects.equals(newText, initialText))
+			Text newText = newValue.textInputAlt(text);
+			if (!Objects.equals(newText, text))
 			{
-				text.setText(newText);
+				text.setText(newText.getText());
+				text.setSize(newText.getSize());
+				if (newText.isBold()) {text.setBold();}
+				if (newText.isItalic()) {text.setItalic();}
+				if (newText.isUnderlined()) {text.setUnderline();}
 				//ChangeShapeSizeCommand cmd = new ChangeShapeSizeCommand(rectangle, initialWidth, rectangle.getHeight(), 0);
 				//cmd.setNewSize(newWidth, rectangle.getHeight(), 0);
 				//undoStack.push(cmd);
@@ -284,5 +337,46 @@ public class CreateContext
 		});
 		
 		return changeText;
+	}
+	
+	/**
+	 * Shared method closes the context menu saved
+	 * to the openContext variable.
+	 * <p/>
+	 * Example usage:
+	 * <pre>
+	 *     ContextMenu canvasContext = new ContextMenu();
+	 *     canvasContext.setOnShowing(event ->
+	 *     {
+	 *          closeContext();
+	 *          openContext = canvasContext;
+	 *     });
+	 * </pre>
+	 *
+	 * @see #createShapeContext
+	 * @see #createCanvasContext
+	 */
+	private void closeContextIfOpen()
+	{
+		if (openContext != null && openContext.isShowing())
+		{
+			openContext.hide();
+		}
+	}
+	
+	/**
+	 * Close the current context menu if user clicks outside of it.
+	 * <p/>
+	 * Example usage:
+	 * <pre>
+	 *     CreateContext context = new CreateContext();
+	 *     context.setupGlobalContextMenuHandler(scene);
+	 * </pre>
+	 *
+	 * @param scene The scene to close the context menu in.
+	 */
+	public void ifContextExternalClick(Scene scene)
+	{
+		scene.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> closeContextIfOpen());
 	}
 }

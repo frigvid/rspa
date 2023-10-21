@@ -1,7 +1,8 @@
 package com.frigvid.rspa.figure.shape;
 
-import com.frigvid.rspa.IFigure;
+import javafx.scene.Cursor;
 
+// TODO: Implement abstract wrapper class for Shapes and use that instead of extending it directly.
 public class Line
 		extends javafx.scene.shape.Line
 		implements IFigure
@@ -11,6 +12,7 @@ public class Line
 	public Line(double startX, double startY, double endX, double endY)
 	{
 		super(startX, startY, endX, endY);
+		changeCursorOnHover();
 	}
 	
 	/**
@@ -42,6 +44,20 @@ public class Line
 		double angle = Math.atan2(getEndY() - getStartY(), getEndX() - getStartX());
 		setEndX(getStartX() + length * Math.cos(angle));
 		setEndY(getStartY() + length * Math.sin(angle));
+	}
+	
+	/**
+	 * Change the cursor to a hand when hovering over the text.
+	 * <p/>
+	 * Use it in the constructor.
+	 * <p/>
+	 * TODO: Move this to an abstract superclass, or less
+	 * 		 optimally, a utility class.
+	 */
+	private void changeCursorOnHover()
+	{
+		this.setOnMouseEntered(event -> this.setCursor(Cursor.HAND));
+		this.setOnMouseExited(event -> this.setCursor(Cursor.DEFAULT));
 	}
 	
 	/* Mathematical function. Might be useful for something like setLength().

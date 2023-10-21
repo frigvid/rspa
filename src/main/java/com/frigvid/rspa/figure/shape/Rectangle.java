@@ -1,7 +1,8 @@
 package com.frigvid.rspa.figure.shape;
 
-import com.frigvid.rspa.IFigure;
+import javafx.scene.Cursor;
 
+// TODO: Implement abstract wrapper class for Shapes and use that instead of extending it directly.
 public class Rectangle
 		extends javafx.scene.shape.Rectangle
 		implements IFigure
@@ -11,6 +12,7 @@ public class Rectangle
 	public Rectangle(double x, double y, double width, double height)
 	{
 		super(x, y, width, height);
+		changeCursorOnHover();
 	}
 	
 	/**
@@ -35,6 +37,20 @@ public class Rectangle
 	{
 		this.setX(x);
 		this.setY(y);
+	}
+	
+	/**
+	 * Change the cursor to a hand when hovering over the text.
+	 * <p/>
+	 * Use it in the constructor.
+	 * <p/>
+	 * TODO: Move this to an abstract superclass, or less
+	 * 		 optimally, a utility class.
+	 */
+	private void changeCursorOnHover()
+	{
+		this.setOnMouseEntered(event -> this.setCursor(Cursor.HAND));
+		this.setOnMouseExited(event -> this.setCursor(Cursor.DEFAULT));
 	}
 	
 	/* Mathematical functions. Very pointless though, so commented out until further notice.

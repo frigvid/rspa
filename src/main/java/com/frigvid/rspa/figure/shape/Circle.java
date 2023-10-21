@@ -1,7 +1,8 @@
 package com.frigvid.rspa.figure.shape;
 
-import com.frigvid.rspa.IFigure;
+import javafx.scene.Cursor;
 
+// TODO: Implement abstract wrapper class for Shapes and use that instead of extending it directly.
 public class Circle
 		extends javafx.scene.shape.Circle
 		implements IFigure
@@ -11,11 +12,21 @@ public class Circle
 	public Circle(double centerX, double centerY, double radius)
 	{
 		super(centerX, centerY, radius);
+		changeCursorOnHover();
 	}
 	
-	public void test() {
-		Circle test = new Circle(100, 100, 25);
-		test.getRadius();
+	/**
+	 * Change the cursor to a hand when hovering over the text.
+	 * <p/>
+	 * Use it in the constructor.
+	 * <p/>
+	 * TODO: Move this to an abstract superclass, or less
+	 * 		 optimally, a utility class.
+	 */
+	private void changeCursorOnHover()
+	{
+		this.setOnMouseEntered(event -> this.setCursor(Cursor.HAND));
+		this.setOnMouseExited(event -> this.setCursor(Cursor.DEFAULT));
 	}
 	
 	// TESTING

@@ -1,5 +1,6 @@
 package com.frigvid.rspa.ui;
 
+import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -24,6 +25,26 @@ public abstract class GUI
 	}
 	
 	public abstract void initialize();
+	
+	/**
+	 * Get the Scene. Useful if you for need to access the Scene,
+	 * but for some reason don't have access to the Scene itself,
+	 * but do have access to something like the root BorderPane.
+	 * <p/>
+	 * Example usage:
+	 * <pre>
+	 *     WindowMain windowMain = new WindowMain(stage);
+	 *     BorderPane root = windowMain.getRoot();
+	 *     Scene scene = windowMain.getScene();
+	 * </pre>
+	 *
+	 * @return The Scene.
+	 * @see CreateContext CreateContext for an example in the createShapeContext and createCanvasContext methods.
+	 */
+	public Scene getScene()
+	{
+		return stage.getScene();
+	}
 	
 	/**
 	 * Get the root BorderPane. Useful if you want to add a Node to the root,

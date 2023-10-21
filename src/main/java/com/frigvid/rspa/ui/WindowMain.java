@@ -1,9 +1,11 @@
 package com.frigvid.rspa.ui;
 
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Shape;
@@ -12,10 +14,12 @@ import javafx.stage.Stage;
 public class WindowMain
 		extends GUI
 {
+	CreateContext context = new CreateContext();
 	/* Used to check if user is trying to drag a shape,
 	 * as opposed to interact with it. */
 	boolean isDragging = false;
-	CreateContext context = new CreateContext();
+	private boolean altPressed = false;
+	private boolean mousePressed = false;
 	
 	public WindowMain(Stage stage)
 	{
@@ -35,34 +39,68 @@ public class WindowMain
 	@Override
 	public void initialize()
 	{
-		windowMain();
-		// TODO: Move canvas code into canvas() method.
-		// TODO: Move sidebar code into sidebar() method.
-		// TODO: Remove windowMain() method.
-		// TODO: Call canvas() and sidebar() methods from initUI() method.
+		// TODO: Implement holding CTRL for changing rotation on shape under cursor.
+		// TODO: Implement holding ALT for moving shape under cursor.
+		root = new BorderPane();
+		
+		root.setCenter(createCanvas());
+		root.setRight(createSidebar());
+		
+		Scene scene = new Scene(root, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		
+		scene.setOnKeyPressed(event -> {
+			if (event.isAltDown()) {
+				altPressed = true;
+				if (!mousePressed) {
+					scene.setCursor(Cursor.OPEN_HAND);
+				}
+			}
+		});
+		scene.setOnKeyReleased(event -> {
+			if (event.getCode().toString().equals("ALT")) {
+				altPressed = false;
+				scene.setCursor(Cursor.DEFAULT);
+			}
+		});
+		
+		// Detect mouse pressed and released with ALT key
+		scene.setOnMousePressed(event -> {
+			if (altPressed && event.isPrimaryButtonDown()) {
+				mousePressed = true;
+				scene.setCursor(Cursor.CLOSED_HAND);
+			}
+		});
+		scene.setOnMouseReleased(event -> {
+			if (altPressed) {
+				mousePressed = false;
+				scene.setCursor(Cursor.OPEN_HAND);
+			}
+		});
+		
+		stage.setTitle(DEFAULT_TITLE);
+		stage.setMinHeight(MINIMUM_HEIGHT);
+		stage.setMinWidth(MINIMUM_WIDTH);
+		stage.getIcons().add(new Image(DEFAULT_ICON));
+		stage.setScene(scene);
+		stage.show();
 	}
 	
 	/**
-	 * This method currently contains the primary UI code,
-	 * however, it will eventually be split into their own
-	 * methods once the code base has matured a bit more.
+	 * Create the canvas Pane.
 	 * <p/>
-	 * Essentially, this method is useful for prototyping
-	 * and testing, but isn't really optimal for production
-	 * in my opinion.
+	 * Example usage:
+	 * <pre>
+	 *     BorderPane root = new BorderPane();
+	 *     root.setCenter(canvas());
+	 * </pre>
+	 *
+	 * @return The canvas Pane.
 	 */
-	private void windowMain()
+	private Pane createCanvas()
 	{
-		root = new BorderPane();
 		canvas = new Pane();
-		//ListView<> sidebar = new ListView<>();
 		
-		root.setCenter(canvas);
-		//root.setRight(sidebar);
-		
-		// Setting background color to differentiate which is which.
 		canvas.setStyle("-fx-background-color: #7e1e1e;");
-		//sidebar.setStyle("-fx-background-color: #15e18c;");
 		
 		/* Mouse event handler. */
 		// TODO: Implement mouse event handler.
@@ -77,38 +115,49 @@ public class WindowMain
 		// Temporary code for testing.
 		canvas.setOnContextMenuRequested(event ->
 		{
-			// TODO: Fix import of JavaFX shapes and RSPA shapes.
+			if (altPressed)
+			{
+				event.consume();
+				return;
+			}
 			
+			// TODO: Fix import of JavaFX shapes and RSPA shapes.
 			if (event.getTarget() instanceof Shape)
 			{
-				ContextMenu shapeContext = context.createShapeContext((Shape) event.getTarget(), canvas, null);
+				ContextMenu shapeContext = context.createShapeContext((Shape) event.getTarget(), canvas, root.getScene());
 				shapeContext.show(canvas, event.getScreenX(), event.getScreenY());
 			}
 			else
 			{
-				ContextMenu canvasContext = context.createCanvasContext();
+				ContextMenu canvasContext = context.createCanvasContext(root.getScene());
 				canvasContext.show(canvas, event.getScreenX(), event.getScreenY());
 			}
 			
 			event.consume();
 		});
 		
-		Scene scene = new Scene(root, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-		stage.setTitle(DEFAULT_TITLE);
-		stage.setMinHeight(MINIMUM_HEIGHT);
-		stage.setMinWidth(MINIMUM_WIDTH);
-		stage.getIcons().add(new Image(DEFAULT_ICON));
-		stage.setScene(scene);
-		stage.show();
+		return canvas;
 	}
 	
-	private void canvas(BorderPane borderPane, Pane canvas)
+	private Pane createSidebar()
 	{
+		Pane sidebar = new Pane();
+		
+		sidebar.setStyle("-fx-background-color: #15e18c;");
+		sidebar.setPrefWidth(200);
+		
+		return sidebar;
 	}
 	
-	private void sidebar()
-	{
-	}
+	// Temporarily commented out.
+	//private ListView<> createSidebar()
+	//{
+	//	ListView<> sidebar = new ListView<>();
+	//
+	//	//sidebar.setStyle("-fx-background-color: #15e18c;");
+	//
+	//	return sidebar;
+	//}
 	
 	/**
 	 * Work in progress handler method to deal with the different
@@ -169,8 +218,4 @@ public class WindowMain
 		//	}
 		//}
 	}
-	
-	
-	
-	
 }
