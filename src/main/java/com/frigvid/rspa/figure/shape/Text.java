@@ -1,8 +1,8 @@
 package com.frigvid.rspa.figure.shape;
 
+import com.frigvid.rspa.figure.FigureType;
 import com.frigvid.rspa.figure.IFigure;
 import com.frigvid.rspa.figure.ShapeDragHandler;
-import javafx.scene.Cursor;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Font;
 
@@ -12,11 +12,17 @@ public class Text
 		extends javafx.scene.text.Text
 		implements IFigure
 {
+	private final static FigureType FIGURE_TYPE = FigureType.TEXT;
 	private boolean isItalic = false;
 	private boolean isBold = false;
 	private boolean isUnderline = false;
 	
-	public Text() {}
+	public Text()
+	{
+		/* Enable dragging of any Line shape. */
+		ShapeDragHandler dragHandler = new ShapeDragHandler(this);
+		dragHandler.enableDrag();
+	}
 	
 	public Text(double x, double y, String text)
 	{
@@ -35,6 +41,16 @@ public class Text
 		/* Enable dragging of any Text shape. */
 		ShapeDragHandler dragHandler = new ShapeDragHandler(this);
 		dragHandler.enableDrag();
+	}
+	
+	public FigureType getType()
+	{
+		return FIGURE_TYPE;
+	}
+	
+	public Text getShape()
+	{
+		return this;
 	}
 	
 	/**
@@ -72,6 +88,12 @@ public class Text
 	public void setSize(double size)
 	{
 		this.setFont(new Font(size));
+	}
+	
+	public void setPosition(double x, double y)
+	{
+		this.setX(x);
+		this.setY(y);
 	}
 	
 	/**

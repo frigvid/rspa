@@ -5,14 +5,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.scene.shape.Shape;
 
 public abstract class GUI
 {
 	protected static final String DEFAULT_TITLE = "RSPA";
 	protected static final String DEFAULT_ICON = String.valueOf(GUI.class.getResource("/com/frigvid/rspa/icon/logo.png"));
 	protected static final double DEFAULT_WIDTH = 1000.0;
-	protected static final double DEFAULT_HEIGHT = 515.0;
+	protected static final double DEFAULT_HEIGHT = 580.0;
 	protected static final double MINIMUM_WIDTH = 500.0;
 	protected static final double MINIMUM_HEIGHT = 500.0;
 	
@@ -21,12 +20,14 @@ public abstract class GUI
 	protected Pane canvas;
 	protected StackPane sidebar;
 	
+	public GUI() {}
+	
 	public GUI(Stage stage)
 	{
 		this.stage = stage;
 	}
 	
-	public abstract void initialize();
+	//public abstract void initialize();
 	
 	/**
 	 * Get the Scene. Useful if you for need to access the Scene,

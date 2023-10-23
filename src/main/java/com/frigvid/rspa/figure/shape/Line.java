@@ -1,5 +1,6 @@
 package com.frigvid.rspa.figure.shape;
 
+import com.frigvid.rspa.figure.FigureType;
 import com.frigvid.rspa.figure.IFigure;
 import com.frigvid.rspa.figure.ShapeDragHandler;
 import javafx.scene.Cursor;
@@ -9,7 +10,14 @@ public class Line
 		extends javafx.scene.shape.Line
 		implements IFigure
 {
-	public Line() {}
+	private final static FigureType FIGURE_TYPE = FigureType.LINE;
+	
+	public Line()
+	{
+		/* Enable dragging of any Line shape. */
+		ShapeDragHandler dragHandler = new ShapeDragHandler(this);
+		dragHandler.enableDrag();
+	}
 	
 	public Line(double startX, double startY, double endX, double endY)
 	{
@@ -18,6 +26,16 @@ public class Line
 		/* Enable dragging of any Line shape. */
 		ShapeDragHandler dragHandler = new ShapeDragHandler(this);
 		dragHandler.enableDrag();
+	}
+	
+	public FigureType getType()
+	{
+		return FIGURE_TYPE;
+	}
+	
+	public Line getShape()
+	{
+		return this;
 	}
 	
 	/**
@@ -54,6 +72,26 @@ public class Line
 		setEndY(y);
 	}
 	
+	public void setPosition(double startX, double startY, double endX, double endY)
+	{
+		setStartX(startX);
+		setStartY(startY);
+		setEndX(endX);
+		setEndY(endY);
+	}
+	
+	public void setStartPosition(double x, double y)
+	{
+		setStartX(x);
+		setStartY(y);
+	}
+	
+	public void setEndPosition(double x, double y)
+	{
+		setEndX(x);
+		setEndY(y);
+	}
+	
 	/**
 	 * Gets the length of the line.
 	 *
@@ -83,6 +121,11 @@ public class Line
 		double angle = Math.atan2(getEndY() - getStartY(), getEndX() - getStartX());
 		setEndX(getStartX() + length * Math.cos(angle));
 		setEndY(getStartY() + length * Math.sin(angle));
+	}
+	
+	public void setThickness(double thickness)
+	{
+		setStrokeWidth(thickness);
 	}
 	
 	/* Mathematical function. Might be useful for something like setLength().

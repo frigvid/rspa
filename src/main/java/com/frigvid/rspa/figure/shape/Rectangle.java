@@ -1,19 +1,22 @@
 package com.frigvid.rspa.figure.shape;
 
+import com.frigvid.rspa.figure.FigureType;
 import com.frigvid.rspa.figure.IFigure;
 import com.frigvid.rspa.figure.ShapeDragHandler;
-import com.frigvid.rspa.history.MoveShape;
-import javafx.scene.Cursor;
-import javafx.scene.layout.Pane;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 // TODO: Implement abstract wrapper class for Shapes and use that instead of extending it directly.
 public class Rectangle
 		extends javafx.scene.shape.Rectangle
 		implements IFigure
 {
-	public Rectangle() {}
+	private final static FigureType FIGURE_TYPE = FigureType.RECTANGLE;
+	
+	public Rectangle()
+	{
+		/* Enable dragging of any Line shape. */
+		ShapeDragHandler dragHandler = new ShapeDragHandler(this);
+		dragHandler.enableDrag();
+	}
 	
 	public Rectangle(double x, double y, double width, double height)
 	{
@@ -22,6 +25,16 @@ public class Rectangle
 		/* Enable dragging of any Rectangle shape. */
 		ShapeDragHandler dragHandler = new ShapeDragHandler(this);
 		dragHandler.enableDrag();
+	}
+	
+	public FigureType getType()
+	{
+		return FIGURE_TYPE;
+	}
+	
+	public Rectangle getShape()
+	{
+		return this;
 	}
 	
 	/**

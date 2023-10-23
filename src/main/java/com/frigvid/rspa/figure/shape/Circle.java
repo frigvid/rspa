@@ -1,5 +1,6 @@
 package com.frigvid.rspa.figure.shape;
 
+import com.frigvid.rspa.figure.FigureType;
 import com.frigvid.rspa.figure.IFigure;
 import com.frigvid.rspa.figure.ShapeDragHandler;
 import javafx.scene.Cursor;
@@ -9,7 +10,14 @@ public class Circle
 		extends javafx.scene.shape.Circle
 		implements IFigure
 {
-	public Circle() {}
+	private final static FigureType FIGURE_TYPE = FigureType.CIRCLE;
+	
+	public Circle()
+	{
+		/* Enable dragging of any Line shape. */
+		ShapeDragHandler dragHandler = new ShapeDragHandler(this);
+		dragHandler.enableDrag();
+	}
 	
 	public Circle(double centerX, double centerY, double radius)
 	{
@@ -18,6 +26,22 @@ public class Circle
 		/* Enable dragging of any Circle shape. */
 		ShapeDragHandler dragHandler = new ShapeDragHandler(this);
 		dragHandler.enableDrag();
+	}
+	
+	public FigureType getType()
+	{
+		return FIGURE_TYPE;
+	}
+	
+	public Circle getShape()
+	{
+		return this;
+	}
+	
+	public void setPosition(double x, double y)
+	{
+		this.setCenterX(x);
+		this.setCenterY(y);
 	}
 	
 	// TESTING

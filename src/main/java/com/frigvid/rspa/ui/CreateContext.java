@@ -1,16 +1,19 @@
 package com.frigvid.rspa.ui;
 
+import com.frigvid.rspa.figure.FigureType;
 import com.frigvid.rspa.figure.shape.Line;
 import com.frigvid.rspa.figure.shape.Rectangle;
 import com.frigvid.rspa.figure.ShapeHandler;
 import com.frigvid.rspa.figure.shape.Text;
+import com.frigvid.rspa.figure.shape.Circle;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
 import java.util.Objects;
@@ -32,7 +35,7 @@ public class CreateContext
 	 *
 	 * @param shape The shape to create context menu for.
 	 * @param canvas The canvas to draw on.
-	 * @param scene The scene used to set up listeners for closing the context menu.
+	 * @param scene The Scene used to set up listeners for closing the context menu.
 	 * @return The context menu.
 	 */
 	public ContextMenu createShapeContext(Shape shape, Pane canvas, Scene scene)
@@ -40,19 +43,17 @@ public class CreateContext
 		ContextMenu shapeContext = new ContextMenu();
 		
 		/* Define shared menu items. */
-		MenuItem strokeColor = new MenuItem("Change Stroke Color");
-		MenuItem fillColor = new MenuItem("Change Fill Color");
-		MenuItem changeOpacity = new MenuItem("Change Opacity");
+		//MenuItem strokeColor = new MenuItem("Change Stroke Color");
+		//MenuItem fillColor = new MenuItem("Change Fill Color");
+		//MenuItem changeOpacity = new MenuItem("Change Opacity");
 		MenuItem moveToFront = new MenuItem("Bring to Front");
 		MenuItem moveToBack = new MenuItem("Send to Back");
 		MenuItem moveForwardByOne = new MenuItem("Bring Forward by One");
 		MenuItem moveBackwardByOne = new MenuItem("Send Backward by One");
 		MenuItem delete = new MenuItem("Delete");
 		
-		// TODO: Check shape type.
-		
-		strokeColor.setOnAction(event -> shapeHandler.setStrokeColor(shape, newValue.colorPicker((Color) shape.getStroke())));
-		fillColor.setOnAction(event -> shapeHandler.setFillColor(shape, newValue.colorPicker((Color) shape.getFill())));
+		//strokeColor.setOnAction(event -> shapeHandler.setStrokeColor(shape, newValue.colorPicker((Color) shape.getStroke())));
+		//fillColor.setOnAction(event -> shapeHandler.setFillColor(shape, newValue.colorPicker((Color) shape.getFill())));
 		moveToFront.setOnAction(event -> shape.toFront());
 		moveToBack.setOnAction(event -> shape.toBack());
 		moveForwardByOne.setOnAction(event ->
@@ -64,6 +65,7 @@ public class CreateContext
 				canvas.getChildren().add(index + 1, shape);
 			}
 		});
+		
 		moveBackwardByOne.setOnAction(event ->
 		{
 			int index = canvas.getChildren().indexOf(shape);
@@ -73,28 +75,29 @@ public class CreateContext
 				canvas.getChildren().add(index - 1, shape);
 			}
 		});
+		
 		delete.setOnAction(event -> shapeHandler.deleteShape(shape, canvas));
 		
 		// NOTE: Alternatively use if (shape instanceof Line) {}.
-		switch ((shape.getClass().getSimpleName()).toUpperCase()) {
-			case "CIRCLE":
-				shapeContext.getItems().add(instanceCircle(shape));
-				break;
-			case "LINE":
-				shapeContext.getItems().add(instanceLine(shape));
-				break;
-			case "RECTANGLE":
-				shapeContext.getItems().addAll(
-						instanceRectangleHeight(shape),
-						instanceRectangleWidth(shape)
-				);
-				break;
-			case "TEXT":
-				shapeContext.getItems().add(instanceText(shape));
-				break;
-			default:
-				break;
-		}
+		//switch ((shape.getClass().getSimpleName()).toUpperCase()) {
+		//	case "CIRCLE":
+		//		shapeContext.getItems().add(instanceCircle(shape));
+		//		break;
+		//	case "LINE":
+		//		shapeContext.getItems().add(instanceLine(shape));
+		//		break;
+		//	case "RECTANGLE":
+		//		shapeContext.getItems().addAll(
+		//				instanceRectangleHeight(shape),
+		//				instanceRectangleWidth(shape)
+		//		);
+		//		break;
+		//	case "TEXT":
+		//		shapeContext.getItems().add(instanceText(shape));
+		//		break;
+		//	default:
+		//		break;
+		//}
 		
 		/* Closes the shape context menu if
 		 * another context menu of the same type is opened.
@@ -110,25 +113,25 @@ public class CreateContext
 		});
 		
 		/* Start adding remaining MenuItems to the ContextMenu. */
-		shapeContext.getItems().addAll(
-				new SeparatorMenuItem(),
-				strokeColor
-		);
+		//shapeContext.getItems().addAll(
+		//		new SeparatorMenuItem(),
+		//		strokeColor
+		//);
 		
 		/* Only add fill color menu item if shape is not a line.
 		 *
 		 * I'd prefer to not split up "addAll()" method like this,
 		 * however, it's the easiest way to add or remove this
 		 * MenuItem and add it to the correct place in the ContextMenu. */
-		if (!(shape instanceof Line))
-		{
-			shapeContext.getItems().add(fillColor);
-		}
+		//if (!(shape instanceof Line))
+		//{
+		//	shapeContext.getItems().add(fillColor);
+		//}
 		
 		/* Finish adding remaining MenuItems to the ContextMenu. */
 		shapeContext.getItems().addAll(
-				changeOpacity,
-				new SeparatorMenuItem(),
+				//changeOpacity,
+				//new SeparatorMenuItem(),
 				moveToFront,
 				moveToBack,
 				moveForwardByOne,
@@ -149,41 +152,75 @@ public class CreateContext
 	 *     ContextMenu canvasContext = context.createCanvasContext();
 	 * </pre>
 	 *
-	 * @param scene The scene used to set up listeners for closing the context menu.
+	 * @param root The root pane of the scene. The Scene is gotten from this.
+	 * @param canvas The canvas to draw on.
 	 * @return The context menu.
 	 */
-	public ContextMenu createCanvasContext(Scene scene, Pane canvas)
+	public ContextMenu createCanvasContext(BorderPane root, Pane canvas)
 	{
+		Scene scene = root.getScene();
 		ContextMenu canvasContext = new ContextMenu();
 		
 		/* Define shared menu items. */
+		MenuItem shapeSelect = new MenuItem("Select drawing...");
 		MenuItem shapeCircle = new MenuItem("Draw Circle");
 		MenuItem shapeLine = new MenuItem("Draw Line");
 		MenuItem shapeRectangle = new MenuItem("Draw Rectangle");
 		MenuItem shapeText = new MenuItem("Draw Text");
+		MenuItem shapeDeselect = new MenuItem("Deselect shape");
+		MenuItem resetCanvas = new MenuItem("Reset canvas");
 		
-		// TODO: Enable user to preset radius through the sidebar.
+		/* Define shapes out of setOnAction scope. */
+		
+		// TODO: Integrate with sidebar selection.
+		shapeSelect.setOnAction(event ->
+		{
+			canvas.setOnMouseClicked(eventSelect ->
+			{
+				if (eventSelect.getButton() == MouseButton.PRIMARY && !eventSelect.isAltDown())
+				{
+					Node node = eventSelect.getPickResult().getIntersectedNode();
+					createShapeSidebar(node, root);
+				}
+			});
+		});
+		
 		shapeCircle.setOnAction(event ->
+		{
+			Circle circle = new Circle();
+			CreateSidebar sidebar = new CreateSidebar(FigureType.CIRCLE);
+			sidebar.setNode(circle);
+			root.setRight(sidebar.getSidebar());
+			
 			canvas.setOnMouseClicked(eventCircle ->
 				{
-					if (eventCircle.getButton() == MouseButton.PRIMARY)
+					if (eventCircle.getButton() == MouseButton.PRIMARY && !eventCircle.isAltDown())
 					{
-						System.out.println("Circle: " + eventCircle.getX() + ", " + eventCircle.getY());
-						Circle circle = new Circle(eventCircle.getX(), eventCircle.getY(), 25);
+						circle.setPosition(eventCircle.getX(), eventCircle.getY());
+						circle.setRadius(sidebar.getCircleRadius());
+						
+						// Add text to canvas and close sidebar.
 						canvas.getChildren().add(circle);
-						//canvas.setOnMouseClicked(null); // Uncomment to require a new click for each circle.
+						canvas.setOnMouseClicked(null);
+						root.setRight(null);
 					}
-				}));
+				});
+		});
 		
-		// TODO: Enable user to preset width through the sidebar.
 		shapeLine.setOnAction(event ->
 		{
+			Line line = new Line();
+			CreateSidebar sidebar = new CreateSidebar(FigureType.LINE);
+			sidebar.setNode(line);
+			sidebar.disableLineButtons();
+			root.setRight(sidebar.getSidebar());
+			
 			final Double[] startX = {null};
 			final Double[] startY = {null};
 			
 			canvas.setOnMouseClicked(eventLine ->
 			{
-				if (eventLine.getButton() == MouseButton.PRIMARY)
+				if (eventLine.getButton() == MouseButton.PRIMARY && !eventLine.isAltDown())
 				{
 					if (startX[0] == null)
 					{
@@ -191,13 +228,17 @@ public class CreateContext
 						startY[0] = eventLine.getY();
 					} else
 					{
-						System.out.println("Line: " + startX[0] + ", " + startY[0] + ", " + eventLine.getX() + ", " + eventLine.getY());
-						Line line = new Line(startX[0], startY[0], eventLine.getX(), eventLine.getY());
-						line.setStrokeWidth(5);
+						line.setPosition(startX[0], startY[0], eventLine.getX(), eventLine.getY());
+						line.setThickness(sidebar.getLineThickness());
+						
+						// Add text to canvas and close sidebar.
 						canvas.getChildren().add(line);
+						canvas.setOnMouseClicked(null);
+						root.setRight(null);
+						
+						/* Reset start position values. */
 						startX[0] = null;
 						startY[0] = null;
-						//canvas.setOnMouseClicked(null); // Uncomment to require a new click for each circle.
 					}
 				}
 			});
@@ -206,44 +247,74 @@ public class CreateContext
 		// TODO: Enable user to preset width and height through the sidebar.
 		shapeRectangle.setOnAction(event ->
 		{
-			final Double[] width = {50.0};
-			final Double[] height = {50.0};
+			Rectangle rectangle = new Rectangle();
+			CreateSidebar sidebar = new CreateSidebar(FigureType.RECTANGLE);
+			sidebar.setNode(rectangle);
+			root.setRight(sidebar.getSidebar());
 			
 			canvas.setOnMouseClicked(eventRectangle ->
 			{
-				if (eventRectangle.getButton() == MouseButton.PRIMARY)
+				if (eventRectangle.getButton() == MouseButton.PRIMARY && !eventRectangle.isAltDown())
 				{
-					System.out.println("Rectangle: " + eventRectangle.getX() + ", " + eventRectangle.getY());
-					Rectangle rectangle = new Rectangle(eventRectangle.getX(), eventRectangle.getY(), width[0], height[0]);
+					rectangle.setPosition(eventRectangle.getX(), eventRectangle.getY());
+					rectangle.setSize(sidebar.getRectangleWidth(), sidebar.getRectangleHeight());
+					
+					// Add text to canvas and close sidebar.
 					canvas.getChildren().add(rectangle);
-					//canvas.setOnMouseClicked(null); // Uncomment to require a new click for each rectangle.
+					canvas.setOnMouseClicked(null);
+					root.setRight(null);
 				}
 			});
 		});
 		
-		// TODO: Enable user to preset text through the sidebar.
 		shapeText.setOnAction(event ->
 		{
-			//Text newText = newValue.textInputAlt(null);
-			final Double[] size = {12.0};
+			Text text = new Text();
+			CreateSidebar sidebar = new CreateSidebar(FigureType.TEXT);
+			sidebar.setNode(text);
+			sidebar.disableTextButtons();
+			root.setRight(sidebar.getSidebar());
 			
 			canvas.setOnMouseClicked(eventText ->
 			{
-				if (eventText.getButton() == MouseButton.PRIMARY)
+				if (eventText.getButton() == MouseButton.PRIMARY && !eventText.isAltDown())
 				{
-					System.out.println("Text: " + eventText.getX() + ", " + eventText.getY());
-					Text text = new Text(eventText.getX(), eventText.getY(), "Text", size[0]);
+					text.setPosition(eventText.getX(), eventText.getY());
+					text.setText(sidebar.getText());
+					text.setSize(sidebar.getTextFontSize());
+					
+					// Add text to canvas and close sidebar.
 					canvas.getChildren().add(text);
-					//canvas.setOnMouseClicked(null); // Uncomment to require a new click for each text.
+					canvas.setOnMouseClicked(null);
+					root.setRight(null);
 				}
 			});
 		});
 		
+		/* Leave this empty to "deselect" shapes. */
+		shapeDeselect.setOnAction(event ->
+		{
+			root.setRight(null);
+			canvas.setOnMouseClicked(eventDeselect -> {});
+		});
+		
+		/* Reset canvas to default state. */
+		resetCanvas.setOnAction(event ->
+		{
+			root.setRight(null);
+			canvas.getChildren().clear();
+		});
+		
 		canvasContext.getItems().addAll(
+				shapeSelect,
+				new SeparatorMenuItem(),
 				shapeCircle,
 				shapeLine,
 				shapeRectangle,
-				shapeText
+				shapeText,
+				shapeDeselect,
+				new SeparatorMenuItem(),
+				resetCanvas
 		);
 		
 		/* Closes the canvas context menu if
@@ -260,6 +331,71 @@ public class CreateContext
 		});
 		
 		return canvasContext;
+	}
+	
+	private void createShapeSidebar(Node node, BorderPane root)
+	{
+		FigureType type;
+		CreateSidebar sidebar = null;
+		
+		switch (node) {
+			case Circle circle:
+				type = circle.getType();
+				sidebar = new CreateSidebar();
+				sidebar.setStrokeColor((Color) circle.getStroke());
+				sidebar.setFillColor((Color) circle.getFill());
+				sidebar.setNodeOpacity(circle.getOpacity());
+				sidebar.setNodeRotation(circle.getRotate());
+				sidebar.setCircleRadius(circle.getRadius());
+				sidebar.setNode(circle);
+				break;
+			case Line line:
+				type = line.getType();
+				sidebar = new CreateSidebar(type);
+				sidebar.setStrokeColor((Color) line.getStroke());
+				sidebar.setNodeOpacity(line.getOpacity());
+				sidebar.setNodeRotation(line.getRotate());
+				sidebar.setLineLength(line.getLength());
+				sidebar.setLineThickness(line.getStrokeWidth());
+				sidebar.setNode(line);
+				break;
+			case Rectangle rectangle:
+				type = rectangle.getType();
+				sidebar = new CreateSidebar(type);
+				sidebar.setStrokeColor((Color) rectangle.getStroke());
+				sidebar.setFillColor((Color) rectangle.getFill());
+				sidebar.setNodeOpacity(rectangle.getOpacity());
+				sidebar.setNodeRotation(rectangle.getRotate());
+				sidebar.setRectangleWidth(rectangle.getWidth());
+				sidebar.setRectangleHeight(rectangle.getHeight());
+				sidebar.setNode(rectangle);
+				break;
+			case Text text:
+				type = text.getType();
+				sidebar = new CreateSidebar(type);
+				sidebar.setStrokeColor((Color) text.getStroke());
+				sidebar.setFillColor((Color) text.getFill());
+				sidebar.setNodeOpacity(text.getOpacity());
+				sidebar.setNodeRotation(text.getRotate());
+				sidebar.setTextFontSize(text.getSize());
+				sidebar.setTextString(text.getText());
+				sidebar.setNode(text);
+				break;
+			default:
+				type = FigureType.NONE;
+				break; // Yes, I know it's unnecessary. Sue me.
+		}
+		
+		if (sidebar == null)
+		{
+			root.setRight(null);
+			return;
+		}
+		
+		//assert sidebar != null;
+		sidebar.setFigureType(type);
+		sidebar.initialize();
+		root.setRight(sidebar.getSidebar());
 	}
 	
 	/**
