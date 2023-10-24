@@ -14,7 +14,6 @@ public class ResizeCommand
 	private final Object target;
 	private final double oldValue;
 	private final double newValue;
-	//private final String propertyType;
 	private final PropertyType propertyType;
 	
 	public ResizeCommand(Object target, double oldValue, double newValue, PropertyType propertyType)

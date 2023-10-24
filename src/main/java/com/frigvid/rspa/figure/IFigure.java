@@ -1,5 +1,6 @@
 package com.frigvid.rspa.figure;
 
+// TODO: Actually re-implement this interface.
 public interface IFigure
 {
 	//double setStartX(double startX);

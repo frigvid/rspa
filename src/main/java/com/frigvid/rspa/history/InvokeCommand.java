@@ -1,9 +1,8 @@
 package com.frigvid.rspa.history;
 
-import com.frigvid.rspa.history.Command;
-
 import java.util.Stack;
 
+// Commands need to also update the sidebar.
 public class InvokeCommand
 {
 	// These need to be static to actually be shared across all instances of InvokeCommand.

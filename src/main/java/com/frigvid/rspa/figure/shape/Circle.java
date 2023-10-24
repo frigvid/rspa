@@ -3,7 +3,6 @@ package com.frigvid.rspa.figure.shape;
 import com.frigvid.rspa.figure.FigureType;
 import com.frigvid.rspa.figure.IFigure;
 import com.frigvid.rspa.figure.ShapeDragHandler;
-import javafx.scene.Cursor;
 
 // TODO: Implement abstract wrapper class for Shapes and use that instead of extending it directly.
 public class Circle

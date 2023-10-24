@@ -5,6 +5,7 @@ import com.frigvid.rspa.history.Command;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 
+// TODO: Text should not have fill changes added to stack.
 public class ColorFillCommand
 		implements Command
 {
