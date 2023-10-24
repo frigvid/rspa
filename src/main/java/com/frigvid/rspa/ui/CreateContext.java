@@ -283,6 +283,10 @@ public class CreateContext
 				{
 					root.setRight(null);
 					canvas.getChildren().clear();
+					
+					// Clear undo-redo stacks. Wouldn't want anything weird to happen when trying to undo-redo after resetting.
+					invokeCommand.clearUndoStack();
+					invokeCommand.clearRedoStack();
 				});
 		
 		canvasContext.getItems().addAll(

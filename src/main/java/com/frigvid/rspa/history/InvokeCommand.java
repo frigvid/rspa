@@ -48,4 +48,21 @@ public class InvokeCommand
 			if (LOGGING) {System.out.println("Nothing to redo...");}
 		}
 	}
+	
+	/* Miscellaneous. */
+	/**
+	 * Clears the undo stack.
+	 */
+	public void clearUndoStack()
+	{
+		undoStack.clear();
+	}
+	
+	/**
+	 * Clears the redo stack.
+	 */
+	public void clearRedoStack()
+	{
+		redoStack.clear();
+	}
 }
