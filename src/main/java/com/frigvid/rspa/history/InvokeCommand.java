@@ -2,7 +2,11 @@ package com.frigvid.rspa.history;
 
 import java.util.Stack;
 
-// TODO: Commands need to also update the sidebar.
+/**
+ * This class is responsible for executing commands and maintaining the undo/redo stacks.
+ * <p>
+ * TODO: Commands need to also update the sidebar.
+ */
 public class InvokeCommand
 {
 	// These need to be static to actually be shared across all instances of InvokeCommand.
