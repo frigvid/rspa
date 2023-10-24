@@ -25,9 +25,8 @@ import java.util.Objects;
 public class CreateContext
 {
 	private final InvokeCommand invokeCommand = new InvokeCommand(); // For undo-redo.
-	InputValue newValue = new InputValue();
-	ShapeHandler shapeHandler = new ShapeHandler();
 	private ContextMenu openContext;
+	InputValue newValue = new InputValue();
 	
 	/**
 	 * Create context menu for a shape.
@@ -48,12 +47,17 @@ public class CreateContext
 		ContextMenu shapeContext = new ContextMenu();
 		
 		/* Define shared menu items. */
-		// TODO: Add a "select shape" option that immediately opens the sidebar.
+		MenuItem selectShapeImmediate = new MenuItem("Select this shape");
 		MenuItem moveToFront = new MenuItem("Bring to Front");
 		MenuItem moveToBack = new MenuItem("Send to Back");
 		MenuItem moveForwardByOne = new MenuItem("Bring Forward by One");
 		MenuItem moveBackwardByOne = new MenuItem("Send Backward by One");
 		MenuItem delete = new MenuItem("Delete");
+		
+		selectShapeImmediate.setOnAction(event ->
+				{
+					createShapeSidebar(shape, (BorderPane) canvas.getParent());
+				});
 		
 		moveToFront.setOnAction(event ->
 				{
@@ -82,11 +86,11 @@ public class CreateContext
 				});
 		
 		delete.setOnAction(event ->
-		{
-			DeleteShapeCommand deleteCmd = new DeleteShapeCommand(canvas, shape);
-			deleteCmd.execute();
-			invokeCommand.execute(deleteCmd);
-		});
+				{
+					DeleteShapeCommand deleteCmd = new DeleteShapeCommand(canvas, shape);
+					deleteCmd.execute();
+					invokeCommand.execute(deleteCmd);
+				});
 		
 		/* Closes the shape context menu if
 		 * another context menu of the same type is opened.
@@ -103,6 +107,8 @@ public class CreateContext
 		
 		/* Finish adding remaining MenuItems to the ContextMenu. */
 		shapeContext.getItems().addAll(
+				selectShapeImmediate,
+				new SeparatorMenuItem(),
 				moveToFront,
 				moveToBack,
 				moveForwardByOne,
