@@ -206,6 +206,7 @@ public class CreateSidebar
 		return sidebarItem;
 	}
 	
+	// TODO: Investigate why the default fill color doesn't actually get applied.
 	/**
 	 * This contains the fill color component for all shapes except Line.
 	 *

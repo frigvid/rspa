@@ -22,9 +22,9 @@ public class ResizeCommand
 		this.oldValue = oldValue;
 		this.newValue = newValue;
 		this.propertyType = propertyType;
-		//this.propertyType = propertyType.toUpperCase();
 	}
 	
+	// Generally, you'd want to keep these in their own file, but this is fine. Not quote-unqoute best practice, but functional all the same.
 	public enum PropertyType
 	{
 		OPACITY,
@@ -52,45 +52,44 @@ public class ResizeCommand
 	{
 		switch (propertyType)
 		{
-			case PropertyType.OPACITY:
+			case OPACITY:
 				if (target instanceof Node node)
 				{
 					node.setOpacity(value);
 				}
 				break;
-			case PropertyType.RADIUS:
+			case RADIUS:
 				if (target instanceof Circle circle)
 				{
 					circle.setRadius(value);
 				}
 				break;
-			case PropertyType.WIDTH:
+			case WIDTH:
 				if (target instanceof Rectangle rectangle)
 				{
 					rectangle.setWidth(value);
 				}
 				break;
-			case PropertyType.HEIGHT:
+			case HEIGHT:
 				if (target instanceof Rectangle rectangle)
 				{
 					rectangle.setHeight(value);
 				}
 				break;
-			case PropertyType.LENGTH:
+			case LENGTH:
 				if (target instanceof Line line)
 				{
 					line.setEndX(line.getStartX() + value);
 				}
 				break;
-			case PropertyType.THICKNESS:
+			case THICKNESS:
 				if (target instanceof Line line) {
 					line.setStrokeWidth(value);
 				}
 				break;
-			case PropertyType.FONT_SIZE:
+			case FONT_SIZE:
 				if (target instanceof Text text)
 				{
-					//text.setFont(Font.font(value));
 					text.setSize(value);
 				}
 				break;

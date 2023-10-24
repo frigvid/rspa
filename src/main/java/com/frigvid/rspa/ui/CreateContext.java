@@ -8,6 +8,7 @@ import com.frigvid.rspa.figure.shape.Text;
 import com.frigvid.rspa.figure.shape.Circle;
 import com.frigvid.rspa.history.InvokeCommand;
 import com.frigvid.rspa.history.command.CreateShapeCommand;
+import com.frigvid.rspa.history.command.MoveLayerCommand;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -53,27 +54,31 @@ public class CreateContext
 		MenuItem moveBackwardByOne = new MenuItem("Send Backward by One");
 		MenuItem delete = new MenuItem("Delete");
 		
-		moveToFront.setOnAction(event -> shape.toFront());
-		moveToBack.setOnAction(event -> shape.toBack());
+		moveToFront.setOnAction(event ->
+				{
+					MoveLayerCommand layerCmd = new MoveLayerCommand(shape, MoveLayerCommand.MoveAction.TO_FRONT, canvas.getChildren());
+					layerCmd.execute();
+					invokeCommand.execute(layerCmd);
+				});
+		moveToBack.setOnAction(event ->
+				{
+					MoveLayerCommand layerCmd = new MoveLayerCommand(shape, MoveLayerCommand.MoveAction.TO_BACK, canvas.getChildren());
+					layerCmd.execute();
+					invokeCommand.execute(layerCmd);
+				});
 		moveForwardByOne.setOnAction(event ->
-		{
-			int index = canvas.getChildren().indexOf(shape);
-			if (index < canvas.getChildren().size() - 1)
-			{
-				canvas.getChildren().remove(shape);
-				canvas.getChildren().add(index + 1, shape);
-			}
-		});
+				{
+					MoveLayerCommand layerCmd = new MoveLayerCommand(shape, MoveLayerCommand.MoveAction.FORWARD_BY_ONE, canvas.getChildren());
+					layerCmd.execute();
+					invokeCommand.execute(layerCmd);
+				});
 		
 		moveBackwardByOne.setOnAction(event ->
-		{
-			int index = canvas.getChildren().indexOf(shape);
-			if (index > 0)
-			{
-				canvas.getChildren().remove(shape);
-				canvas.getChildren().add(index - 1, shape);
-			}
-		});
+				{
+					MoveLayerCommand layerCmd = new MoveLayerCommand(shape, MoveLayerCommand.MoveAction.BACKWARD_BY_ONE, canvas.getChildren());
+					layerCmd.execute();
+					invokeCommand.execute(layerCmd);
+				});
 		
 		delete.setOnAction(event -> shapeHandler.deleteShape(shape, canvas));
 		
