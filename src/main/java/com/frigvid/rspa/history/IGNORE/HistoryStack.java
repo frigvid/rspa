@@ -1,19 +1,73 @@
-package com.frigvid.rspa.history;
+package com.frigvid.rspa.history.IGNORE;
 
 import javafx.scene.shape.Shape;
 
 import java.util.Stack;
 
-public abstract class HistoryStack
+public class HistoryStack
 		implements ICommand
 {
+	private static HistoryStack instance;
 	private final Stack<ICommand> undoStack = new Stack<>();
 	private final Stack<ICommand> redoStack = new Stack<>();
+	//private Map<String, Node> shapeMap = new HashMap<>();
 	
-	public void addToHistory()
+	// TEST
+	public static HistoryStack getInstance()
 	{
-	
+		if (instance == null)
+		{
+			instance = new HistoryStack();
+		}
+		
+		return instance;
 	}
+	
+	/* Getters. */
+	public Stack<ICommand> getUndoStack()
+	{
+		return undoStack;
+	}
+	
+	public Stack<ICommand> getRedoStack()
+	{
+		return redoStack;
+	}
+	
+	/* Setters. */
+	public void setUndoStack(Stack<ICommand> undoStack)
+	{
+		this.undoStack.addAll(undoStack);
+	}
+	
+	public void setRedoStack(Stack<ICommand> redoStack)
+	{
+		this.redoStack.addAll(redoStack);
+	}
+	
+	/* Miscellaneous. */
+	public void addToUndoStack(ICommand cmd)
+	{
+		undoStack.push(cmd);
+	}
+	
+	public void addToRedoStack(ICommand cmd)
+	{
+		redoStack.push(cmd);
+	}
+	
+	public void clearUndoStack()
+	{
+		undoStack.clear();
+	}
+	
+	public void clearRedoStack()
+	{
+		redoStack.clear();
+	}
+	
+	
+	
 	
 	public void removeFromHistory()
 	{

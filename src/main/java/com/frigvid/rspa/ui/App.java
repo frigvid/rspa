@@ -1,9 +1,6 @@
 package com.frigvid.rspa.ui;
 
-import com.frigvid.rspa.figure.shape.Circle;
-import com.frigvid.rspa.figure.shape.Rectangle;
-import com.frigvid.rspa.history.MoveShape;
-import javafx.scene.Cursor;
+import com.frigvid.rspa.history.InvokeCommand;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -15,14 +12,12 @@ import javafx.stage.Stage;
 public class App
 		extends GUI
 {
+	private final InvokeCommand invokeCommand = new InvokeCommand();
 	CreateContext context = new CreateContext();
-	//CreateSidebar sidebar = new CreateSidebar();
-	private MoveShape currentMoveCommand;
 	private boolean altPressed = false;
 	private boolean mousePressed = false;
 	private double xOffset = 0;
 	private double yOffset = 0;
-	//private Type currentShapeType;
 	
 	public App(Stage stage)
 	{
@@ -49,6 +44,31 @@ public class App
 		root.setCenter(createCanvas(scene));
 		//root.setRight(sidebar.getSidebar());
 		
+		/* Undo-redo key-combinations. */
+		KeyCombination cZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
+		KeyCombination cSZ = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN);
+		
+		scene.setOnKeyPressed(event ->
+		{
+			if (cZ.match(event))
+			{
+				System.out.println("Undo");
+				invokeCommand.undo();
+				//ICommand cmd = historyStack.getUndoStack().pop();
+				//cmd.undo();
+				//historyStack.addToRedoStack(cmd);
+			}
+			else if (cSZ.match(event))
+			{
+				System.out.println("Redo");
+				invokeCommand.redo();
+				//ICommand cmd = historyStack.getRedoStack().pop();
+				//cmd.redo();
+				//historyStack.addToUndoStack(cmd);
+			}
+		});
+		
+		/* Display application. */
 		stage.setTitle(DEFAULT_TITLE);
 		stage.setMinWidth(MINIMUM_WIDTH);
 		stage.setMinHeight(MINIMUM_HEIGHT);
@@ -102,71 +122,68 @@ public class App
 	
 	
 	
-	private void initCursorHover(Scene scene, Shape shape)
-	{
-		// Detect ALT key pressed and released
-		scene.setOnKeyPressed(event ->
-		{
-			if (event.isAltDown())
-			{
-				altPressed = true;
-				if (!mousePressed)
-				{
-					scene.setCursor(Cursor.OPEN_HAND);
-				}
-			}
-		});
-		
-		scene.setOnKeyReleased(event ->
-		{
-			if (event.getCode().toString().equals("ALT"))
-			{
-				altPressed = false;
-				scene.setCursor(Cursor.DEFAULT);
-			}
-		});
-		
-		// Detect mouse pressed and released with ALT key
-		scene.setOnMousePressed(event ->
-		{
-			if (altPressed && event.isPrimaryButtonDown())
-			{
-				mousePressed = true;
-				scene.setCursor(Cursor.CLOSED_HAND);
-				shape.setOnMousePressed(this::handleShapePress);
-			}
-		});
-		
-		scene.setOnMouseReleased(event ->
-		{
-			if (altPressed)
-			{
-				mousePressed = false;
-				scene.setCursor(Cursor.OPEN_HAND);
-			}
-		});
-	}
-	
-	
-	
-	
-	private void handleShapePress(MouseEvent event)
-	{
-		Shape shape = (Shape) event.getSource();
-		
-		if (shape instanceof Circle circle)
-		{
-			xOffset = event.getSceneX() - circle.getCenterX();
-			yOffset = event.getSceneY() - circle.getCenterY();
-			currentMoveCommand = new MoveShape(circle, circle.getCenterX(), circle.getCenterY());
-		}
-		else if (shape instanceof Rectangle rectangle)
-		{
-			xOffset = event.getSceneX() - rectangle.getX();
-			yOffset = event.getSceneY() - rectangle.getY();
-			currentMoveCommand = new MoveShape(rectangle, rectangle.getX(), rectangle.getY());
-		}
-		
-		event.consume();
-	}
+	//private void initCursorHover(Scene scene, Shape shape)
+	//{
+	//	// Detect ALT key pressed and released
+	//	scene.setOnKeyPressed(event ->
+	//	{
+	//		if (event.isAltDown())
+	//		{
+	//			altPressed = true;
+	//			if (!mousePressed)
+	//			{
+	//				scene.setCursor(Cursor.OPEN_HAND);
+	//			}
+	//		}
+	//	});
+	//
+	//	scene.setOnKeyReleased(event ->
+	//	{
+	//		if (event.getCode().toString().equals("ALT"))
+	//		{
+	//			altPressed = false;
+	//			scene.setCursor(Cursor.DEFAULT);
+	//		}
+	//	});
+	//
+	//	// Detect mouse pressed and released with ALT key
+	//	scene.setOnMousePressed(event ->
+	//	{
+	//		if (altPressed && event.isPrimaryButtonDown())
+	//		{
+	//			mousePressed = true;
+	//			scene.setCursor(Cursor.CLOSED_HAND);
+	//			shape.setOnMousePressed(this::handleShapePress);
+	//		}
+	//	});
+	//
+	//	scene.setOnMouseReleased(event ->
+	//	{
+	//		if (altPressed)
+	//		{
+	//			mousePressed = false;
+	//			scene.setCursor(Cursor.OPEN_HAND);
+	//		}
+	//	});
+	//}
+	//
+	//private void handleShapePress(MouseEvent event)
+	//{
+	//	Shape shape = (Shape) event.getSource();
+	//
+	//	if (shape instanceof Circle circle)
+	//	{
+	//		xOffset = event.getSceneX() - circle.getCenterX();
+	//		yOffset = event.getSceneY() - circle.getCenterY();
+	//		currentMoveCommand = new MoveCommand(circle, circle.getCenterX(), circle.getCenterY());
+	//	}
+	//	else if (shape instanceof Rectangle rectangle)
+	//	{
+	//		xOffset = event.getSceneX() - rectangle.getX();
+	//		yOffset = event.getSceneY() - rectangle.getY();
+	//		currentMoveCommand = new MoveCommand(rectangle, rectangle.getX(), rectangle.getY());
+	//	}
+	//
+	//	event.consume();
+	//}
 }

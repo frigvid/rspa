@@ -6,6 +6,8 @@ import com.frigvid.rspa.figure.shape.Rectangle;
 import com.frigvid.rspa.figure.ShapeHandler;
 import com.frigvid.rspa.figure.shape.Text;
 import com.frigvid.rspa.figure.shape.Circle;
+import com.frigvid.rspa.history.InvokeCommand;
+import com.frigvid.rspa.history.command.CreateShapeCommand;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -20,6 +22,7 @@ import java.util.Objects;
 
 public class CreateContext
 {
+	private final InvokeCommand invokeCommand = new InvokeCommand(); // For undo-redo.
 	InputValue newValue = new InputValue();
 	ShapeHandler shapeHandler = new ShapeHandler();
 	private ContextMenu openContext;
@@ -43,17 +46,13 @@ public class CreateContext
 		ContextMenu shapeContext = new ContextMenu();
 		
 		/* Define shared menu items. */
-		//MenuItem strokeColor = new MenuItem("Change Stroke Color");
-		//MenuItem fillColor = new MenuItem("Change Fill Color");
-		//MenuItem changeOpacity = new MenuItem("Change Opacity");
+		// TODO: Add a "select shape" option that immediately opens the sidebar.
 		MenuItem moveToFront = new MenuItem("Bring to Front");
 		MenuItem moveToBack = new MenuItem("Send to Back");
 		MenuItem moveForwardByOne = new MenuItem("Bring Forward by One");
 		MenuItem moveBackwardByOne = new MenuItem("Send Backward by One");
 		MenuItem delete = new MenuItem("Delete");
 		
-		//strokeColor.setOnAction(event -> shapeHandler.setStrokeColor(shape, newValue.colorPicker((Color) shape.getStroke())));
-		//fillColor.setOnAction(event -> shapeHandler.setFillColor(shape, newValue.colorPicker((Color) shape.getFill())));
 		moveToFront.setOnAction(event -> shape.toFront());
 		moveToBack.setOnAction(event -> shape.toBack());
 		moveForwardByOne.setOnAction(event ->
@@ -78,27 +77,6 @@ public class CreateContext
 		
 		delete.setOnAction(event -> shapeHandler.deleteShape(shape, canvas));
 		
-		// NOTE: Alternatively use if (shape instanceof Line) {}.
-		//switch ((shape.getClass().getSimpleName()).toUpperCase()) {
-		//	case "CIRCLE":
-		//		shapeContext.getItems().add(instanceCircle(shape));
-		//		break;
-		//	case "LINE":
-		//		shapeContext.getItems().add(instanceLine(shape));
-		//		break;
-		//	case "RECTANGLE":
-		//		shapeContext.getItems().addAll(
-		//				instanceRectangleHeight(shape),
-		//				instanceRectangleWidth(shape)
-		//		);
-		//		break;
-		//	case "TEXT":
-		//		shapeContext.getItems().add(instanceText(shape));
-		//		break;
-		//	default:
-		//		break;
-		//}
-		
 		/* Closes the shape context menu if
 		 * another context menu of the same type is opened.
 		 *
@@ -112,26 +90,8 @@ public class CreateContext
 			openContext = shapeContext;
 		});
 		
-		/* Start adding remaining MenuItems to the ContextMenu. */
-		//shapeContext.getItems().addAll(
-		//		new SeparatorMenuItem(),
-		//		strokeColor
-		//);
-		
-		/* Only add fill color menu item if shape is not a line.
-		 *
-		 * I'd prefer to not split up "addAll()" method like this,
-		 * however, it's the easiest way to add or remove this
-		 * MenuItem and add it to the correct place in the ContextMenu. */
-		//if (!(shape instanceof Line))
-		//{
-		//	shapeContext.getItems().add(fillColor);
-		//}
-		
 		/* Finish adding remaining MenuItems to the ContextMenu. */
 		shapeContext.getItems().addAll(
-				//changeOpacity,
-				//new SeparatorMenuItem(),
 				moveToFront,
 				moveToBack,
 				moveForwardByOne,
@@ -170,9 +130,6 @@ public class CreateContext
 		MenuItem shapeDeselect = new MenuItem("Deselect shape");
 		MenuItem resetCanvas = new MenuItem("Reset canvas");
 		
-		/* Define shapes out of setOnAction scope. */
-		
-		// TODO: Integrate with sidebar selection.
 		shapeSelect.setOnAction(event ->
 		{
 			canvas.setOnMouseClicked(eventSelect ->
@@ -199,8 +156,11 @@ public class CreateContext
 						circle.setPosition(eventCircle.getX(), eventCircle.getY());
 						circle.setRadius(sidebar.getCircleRadius());
 						
-						// Add text to canvas and close sidebar.
-						canvas.getChildren().add(circle);
+						// Add shape to canvas and add action to history.
+						CreateShapeCommand command = new CreateShapeCommand(canvas, circle);
+						invokeCommand.execute(command);
+						
+						// Remove listeners and close sidebar.
 						canvas.setOnMouseClicked(null);
 						root.setRight(null);
 					}
@@ -231,8 +191,11 @@ public class CreateContext
 						line.setPosition(startX[0], startY[0], eventLine.getX(), eventLine.getY());
 						line.setThickness(sidebar.getLineThickness());
 						
-						// Add text to canvas and close sidebar.
-						canvas.getChildren().add(line);
+						// Add shape to canvas and add action to history.
+						CreateShapeCommand command = new CreateShapeCommand(canvas, line);
+						invokeCommand.execute(command);
+						
+						// Remove listeners and close sidebar.
 						canvas.setOnMouseClicked(null);
 						root.setRight(null);
 						
@@ -244,7 +207,6 @@ public class CreateContext
 			});
 		});
 		
-		// TODO: Enable user to preset width and height through the sidebar.
 		shapeRectangle.setOnAction(event ->
 		{
 			Rectangle rectangle = new Rectangle();
@@ -259,8 +221,11 @@ public class CreateContext
 					rectangle.setPosition(eventRectangle.getX(), eventRectangle.getY());
 					rectangle.setSize(sidebar.getRectangleWidth(), sidebar.getRectangleHeight());
 					
-					// Add text to canvas and close sidebar.
-					canvas.getChildren().add(rectangle);
+					// Add shape to canvas and add action to history.
+					CreateShapeCommand command = new CreateShapeCommand(canvas, rectangle);
+					invokeCommand.execute(command);
+					
+					// Remove listeners and close sidebar.
 					canvas.setOnMouseClicked(null);
 					root.setRight(null);
 				}
@@ -283,8 +248,11 @@ public class CreateContext
 					text.setText(sidebar.getText());
 					text.setSize(sidebar.getTextFontSize());
 					
-					// Add text to canvas and close sidebar.
-					canvas.getChildren().add(text);
+					// Add shape to canvas and add action to history.
+					CreateShapeCommand command = new CreateShapeCommand(canvas, text);
+					invokeCommand.execute(command);
+					
+					// Remove listeners and close sidebar.
 					canvas.setOnMouseClicked(null);
 					root.setRight(null);
 				}

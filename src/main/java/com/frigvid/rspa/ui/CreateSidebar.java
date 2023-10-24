@@ -1,10 +1,9 @@
 package com.frigvid.rspa.ui;
 
 import com.frigvid.rspa.figure.FigureType;
-import com.frigvid.rspa.figure.shape.Circle;
-import com.frigvid.rspa.figure.shape.Line;
-import com.frigvid.rspa.figure.shape.Rectangle;
 import com.frigvid.rspa.figure.shape.Text;
+import com.frigvid.rspa.history.InvokeCommand;
+import com.frigvid.rspa.history.command.*;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -55,6 +54,7 @@ public class CreateSidebar
 	Button textAdd;
 	
 	/* Default values. */
+	private final InvokeCommand invokeCommand = new InvokeCommand(); // For undo-redo.
 	final static int SPINNER_MIN = 1;
 	final static int SPINNER_MAX = 999;
 	FigureType figureType = FigureType.NONE;
@@ -196,7 +196,12 @@ public class CreateSidebar
 				strokeColorPicker
 		);
 		
-		strokeColorPicker.valueProperty().addListener(colorChangeListener(true));
+		strokeColorPicker.valueProperty().addListener(spinnerChangeListener(stroke ->
+		{
+			ColorStrokeCommand colorStrokeCmd = new ColorStrokeCommand(shape, strokeColor, stroke);
+			invokeCommand.execute(colorStrokeCmd);
+			strokeColor = stroke; // Update the variable value, should you need to use a getter.
+		}));
 		
 		return sidebarItem;
 	}
@@ -218,7 +223,12 @@ public class CreateSidebar
 				fillColorPicker
 		);
 		
-		fillColorPicker.valueProperty().addListener(colorChangeListener(false));
+		fillColorPicker.valueProperty().addListener(spinnerChangeListener(fill ->
+				{
+					ColorFillCommand colorFillCmd = new ColorFillCommand(shape, fillColor, fill);
+					invokeCommand.execute(colorFillCmd);
+					fillColor = fill; // Update the variable value, should you need to use a getter.
+				}));
 		
 		return sidebarItem;
 	}
@@ -247,8 +257,9 @@ public class CreateSidebar
 		
 		opacitySpinner.valueProperty().addListener(spinnerChangeListener(opacity ->
 				{
-					nodeOpacity = opacity;
-					shape.setOpacity(opacity);
+					OpacityCommand opacityCmd = new OpacityCommand(shape, circleRadius, opacity);
+					invokeCommand.execute(opacityCmd);
+					nodeOpacity = opacity; // Update the variable value, should you need to use a getter.
 				}));
 		
 		return sidebarItem;
@@ -278,8 +289,9 @@ public class CreateSidebar
 		
 		rotationSpinner.valueProperty().addListener(spinnerChangeListener(rotation ->
 				{
-					nodeRotation = rotation;
-					shape.setRotate(rotation);
+					RotateCommand rotationCmd = new RotateCommand(shape, nodeRotation, rotation);
+					invokeCommand.execute(rotationCmd);
+					nodeRotation = rotation; // Update the variable value, should you need to use a getter.
 				}));
 		
 		return sidebarItem;
@@ -304,8 +316,9 @@ public class CreateSidebar
 		
 		radiusSpinner.valueProperty().addListener(spinnerChangeListener(radius ->
 				{
-					circleRadius = radius;
-					((Circle) shape).setRadius(radius);
+					ResizeCommand resizeCmd = new ResizeCommand(shape, circleRadius, radius, ResizeCommand.PropertyType.RADIUS);
+					invokeCommand.execute(resizeCmd);
+					circleRadius = radius; // Update the variable value, should you need to use a getter.
 				}));
 		
 		return sidebarItem;
@@ -330,8 +343,9 @@ public class CreateSidebar
 		
 		lengthSpinner.valueProperty().addListener(spinnerChangeListener(length ->
 				{
-					lineLength = length;
-					((Line) shape).setLength(length);
+					ResizeCommand resizeCmd = new ResizeCommand(shape, lineLength, length, ResizeCommand.PropertyType.LENGTH);
+					invokeCommand.execute(resizeCmd);
+					lineLength = length; // Update the variable value, should you need to use a getter.
 				}));
 		
 		return sidebarItem;
@@ -356,8 +370,9 @@ public class CreateSidebar
 		
 		thicknessSpinner.valueProperty().addListener(spinnerChangeListener(thickness ->
 				{
-					lineThickness = thickness;
-					((Line) shape).setThickness(thickness);
+					ResizeCommand resizeCmd = new ResizeCommand(shape, lineThickness, thickness, ResizeCommand.PropertyType.THICKNESS);
+					invokeCommand.execute(resizeCmd);
+					lineThickness = thickness; // Update the variable value, should you need to use a getter.
 				}));
 		
 		return sidebarItem;
@@ -382,8 +397,9 @@ public class CreateSidebar
 		
 		widthSpinner.valueProperty().addListener(spinnerChangeListener(width ->
 				{
-					rectangleWidth = width;
-					((Rectangle) shape).setWidth(width);
+					ResizeCommand resizeCmd = new ResizeCommand(shape, rectangleWidth, width, ResizeCommand.PropertyType.WIDTH);
+					invokeCommand.execute(resizeCmd);
+					rectangleWidth = width; // Update the variable value, should you need to use a getter.
 				}));
 		
 		return sidebarItem;
@@ -408,8 +424,9 @@ public class CreateSidebar
 		
 		heightSpinner.valueProperty().addListener(spinnerChangeListener(height ->
 				{
-					rectangleHeight = height;
-					((Rectangle) shape).setHeight(height);
+					ResizeCommand resizeCmd = new ResizeCommand(shape, rectangleHeight, height, ResizeCommand.PropertyType.HEIGHT);
+					invokeCommand.execute(resizeCmd);
+					rectangleHeight = height; // Update the variable value, should you need to use a getter.
 				}));
 		
 		return sidebarItem;
@@ -432,7 +449,12 @@ public class CreateSidebar
 				fontSizeSpinner
 		);
 		
-		fontSizeSpinner.valueProperty().addListener(fontSizeListener());
+		fontSizeSpinner.valueProperty().addListener(spinnerChangeListener(fontSize ->
+				{
+					ResizeCommand resizeCmd = new ResizeCommand(shape, textFontSize, fontSize, ResizeCommand.PropertyType.FONT_SIZE);
+					invokeCommand.execute(resizeCmd);
+					textFontSize = fontSize;
+				}));
 		
 		return sidebarItem;
 	}
@@ -484,8 +506,9 @@ public class CreateSidebar
 		textAdd.setPrefHeight(BUTTON_SIZE);
 		textAdd.setOnAction(event ->
 				{
-					textString = textField.getText();
-					((Text) shape).setText(textField.getText());
+					TextCommand textCmd = new TextCommand(shape, textString, textField.getText());
+					invokeCommand.execute(textCmd);
+					textString = textField.getText(); // Update the variable value, should you need to use a getter.
 				});
 		
 		// Great Scott, it's a *SpaceBar*! ( •_•)>⌐■-■ (⌐■_■) (Ref: https://youtu.be/QJwIsBoe3Lg?si=iP0Z4MVlwexq6IAl&t=88)
@@ -756,29 +779,6 @@ public class CreateSidebar
 		return (observable, oldValue, newValue) ->
 		{
 			action.accept(newValue);
-		};
-	}
-	
-	/**
-	 * This is a listener for the font size Spinner component.
-	 * <p/>
-	 * Note that if you don't update the textFontSize variable
-	 * through this listener, creating new Text through the
-	 * sidebar will instead cause it to use the default or the
-	 * value it was set to when the sidebar was initialized.
-	 * It will update existing Text objects though, because of
-	 * how it works, but just remember not to remove that variable.
-	 *
-	 * @return The ChangeListener for the font size Spinner.
-	 */
-	private ChangeListener<Double> fontSizeListener()
-	{
-		return (observable, oldValue, newValue) ->
-		{
-			textFontSize = newValue;
-			((Text) shape).setSize(newValue);
-			// I think it's actually better UX to not modify the size of the text field. I'll leave it here for reference.
-			//textField.setFont(Font.font(textField.getFont().getFamily(), newValue));
 		};
 	}
 }

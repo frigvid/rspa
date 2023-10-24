@@ -4,11 +4,12 @@ import com.frigvid.rspa.figure.shape.Circle;
 import com.frigvid.rspa.figure.shape.Line;
 import com.frigvid.rspa.figure.shape.Rectangle;
 import com.frigvid.rspa.figure.shape.Text;
-import com.frigvid.rspa.history.MoveShape;
+import com.frigvid.rspa.history.InvokeCommand;
+import com.frigvid.rspa.history.command.MoveShapeCommand;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Shape;
+
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -24,7 +25,13 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class ShapeDragHandler
 {
+	private final InvokeCommand invokeCommand = new InvokeCommand(); // For undo-redo.
+	private MoveShapeCommand moveShapeCmd;
 	private final Node shape;
+	private double oldX;
+	private double oldY;
+	private double newX;
+	private double newY;
 	
 	public ShapeDragHandler(Node shape)
 	{
@@ -33,7 +40,6 @@ public class ShapeDragHandler
 	
 	public void enableDrag()
 	{
-		MoveShape moveShape = new MoveShape((Shape) shape, getShapeX(), getShapeY());
 		AtomicReference<Double> xOffset = new AtomicReference<>((double) 0);
 		AtomicReference<Double> yOffset = new AtomicReference<>((double) 0);
 		
@@ -59,6 +65,13 @@ public class ShapeDragHandler
 		/* Set cursor to move, when pressing and holding Cursor Primary Key. */
 		shape.setOnMousePressed(event ->
 		{
+			// Save old position of shape on click.
+			oldX = getShapeX();
+			oldY = getShapeY();
+			
+			// Construct new command using the minimal constructor.
+			moveShapeCmd = new MoveShapeCommand(shape, getShapeX(), getShapeY());
+			
 			if (event.isAltDown() && event.isPrimaryButtonDown())
 			{
 				shape.setCursor(Cursor.MOVE);
@@ -77,8 +90,9 @@ public class ShapeDragHandler
 		{
 			if (event.isAltDown())
 			{
-				double newX = event.getSceneX() - xOffset.get();
-				double newY = event.getSceneY() - yOffset.get();
+				// Update position of shape while dragging.
+				newX = event.getSceneX() - xOffset.get();
+				newY = event.getSceneY() - yOffset.get();
 				
 				Pane canvas = (Pane) shape.getParent();
 				double canvasWidth = canvas.getWidth();
@@ -99,12 +113,16 @@ public class ShapeDragHandler
 					newY = canvasHeight - shapeHeight;
 				}
 				
-				setShapePosition(newX, newY);
+				// Use command method to update position of shape while in movement.
+				moveShapeCmd.setShapePosition(shape, newX, newY);
 			}
 		});
 		
 		shape.setOnMouseReleased(event ->
 		{
+			newX = getShapeX();
+			newY = getShapeY();
+			
 			if(event.isAltDown())
 			{
 				shape.setCursor(Cursor.OPEN_HAND);
@@ -114,7 +132,9 @@ public class ShapeDragHandler
 				shape.setCursor(Cursor.HAND);
 			}
 			
-			moveShape.setNewPosition(getShapeX(), getShapeY());
+			// Add command to stack. Reason for making a new command is due to position offset issues occur otherwise.
+			moveShapeCmd = new MoveShapeCommand(shape, oldX, oldY, newX, newY);
+			invokeCommand.execute(moveShapeCmd);
 		});
 		
 		/* Reset cursor when mouse exits the shape. */
@@ -263,45 +283,5 @@ public class ShapeDragHandler
 		}
 		
 		return 0;
-	}
-	
-	/**
-	 * Wrapper method for setting the position of the shape.
-	 * <p/>
-	 * Example usage (assuming you've initialized):
-	 * <pre>
-	 *     Shape shape = new Shape();
-	 *     setShapePosition(shape, 10, 10);
-	 * </pre>
-	 *
-	 * @param x The new X-coordinate of the shape.
-	 * @param y The new Y-coordinate of the shape.
-	 */
-	private void setShapePosition(double x, double y)
-	{
-		if (shape instanceof Circle circle)
-		{
-			circle.setCenterX(x);
-			circle.setCenterY(y);
-		}
-		else if (shape instanceof Line line)
-		{
-			double deltaX = x - getShapeX();
-			double deltaY = y - getShapeY();
-			line.setStartX(line.getStartX() + deltaX);
-			line.setStartY(line.getStartY() + deltaY);
-			line.setEndX(line.getEndX() + deltaX);
-			line.setEndY(line.getEndY() + deltaY);
-		}
-		if (shape instanceof Rectangle rectangle)
-		{
-			rectangle.setX(x);
-			rectangle.setY(y);
-		}
-		else if (shape instanceof Text text)
-		{
-			text.setX(x);
-			text.setY(y);
-		}
 	}
 }

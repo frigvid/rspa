@@ -1,7 +1,7 @@
 package com.frigvid.rspa.history;
 
-public interface ICommand
+public interface Command
 {
+	void execute();
 	void undo();
-	void redo();
 }
