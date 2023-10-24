@@ -8,6 +8,7 @@ import com.frigvid.rspa.figure.shape.Text;
 import com.frigvid.rspa.figure.shape.Circle;
 import com.frigvid.rspa.history.InvokeCommand;
 import com.frigvid.rspa.history.command.CreateShapeCommand;
+import com.frigvid.rspa.history.command.DeleteShapeCommand;
 import com.frigvid.rspa.history.command.MoveLayerCommand;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -80,7 +81,12 @@ public class CreateContext
 					invokeCommand.execute(layerCmd);
 				});
 		
-		delete.setOnAction(event -> shapeHandler.deleteShape(shape, canvas));
+		delete.setOnAction(event ->
+		{
+			DeleteShapeCommand deleteCmd = new DeleteShapeCommand(canvas, shape);
+			deleteCmd.execute();
+			invokeCommand.execute(deleteCmd);
+		});
 		
 		/* Closes the shape context menu if
 		 * another context menu of the same type is opened.
