@@ -43,7 +43,7 @@ public class CreateContext
 		ContextMenu shapeContext = new ContextMenu();
 		
 		/* Define shared menu items. */
-		MenuItem selectShapeImmediate = new MenuItem("Select this shape");
+		MenuItem selectShapeImmediate = new MenuItem("Select this drawing");
 		MenuItem moveToFront = new MenuItem("Bring to Front");
 		MenuItem moveToBack = new MenuItem("Send to Back");
 		MenuItem moveForwardByOne = new MenuItem("Bring Forward by One");
@@ -94,11 +94,11 @@ public class CreateContext
 		 * it essentially allows for only one context menu to be
 		 * open at any time. */
 		shapeContext.setOnShowing(event ->
-		{
-			ifContextExternalClick(scene);
-			closeContextIfOpen();
-			openContext = shapeContext;
-		});
+				{
+					ifContextExternalClick(scene);
+					closeContextIfOpen();
+					openContext = shapeContext;
+				});
 		
 		/* Finish adding remaining MenuItems to the ContextMenu. */
 		shapeContext.getItems().addAll(
@@ -273,17 +273,17 @@ public class CreateContext
 		
 		/* Leave this empty to "deselect" shapes. */
 		shapeDeselect.setOnAction(event ->
-		{
-			root.setRight(null);
-			canvas.setOnMouseClicked(eventDeselect -> {});
-		});
+				{
+					root.setRight(null);
+					canvas.setOnMouseClicked(eventDeselect -> {});
+				});
 		
 		/* Reset canvas to default state. */
 		resetCanvas.setOnAction(event ->
-		{
-			root.setRight(null);
-			canvas.getChildren().clear();
-		});
+				{
+					root.setRight(null);
+					canvas.getChildren().clear();
+				});
 		
 		canvasContext.getItems().addAll(
 				shapeSelect,
@@ -304,15 +304,22 @@ public class CreateContext
 		 * it essentially allows for only one context menu to be
 		 * open at any time. */
 		canvasContext.setOnShowing(event ->
-		{
-			ifContextExternalClick(scene);
-			closeContextIfOpen();
-			openContext = canvasContext;
-		});
+				{
+					ifContextExternalClick(scene);
+					closeContextIfOpen();
+					openContext = canvasContext;
+				});
 		
 		return canvasContext;
 	}
 	
+	/**
+	 * This adds the various sidebar components to the sidebar.
+	 * It's kind of ugly, but it works well enough.
+	 *
+	 * @param node The node to create the sidebar for.
+	 * @param root The root pane of the scene. The sidebar position is set with this.
+	 */
 	private void createShapeSidebar(Node node, BorderPane root)
 	{
 		FigureType type;
@@ -322,26 +329,31 @@ public class CreateContext
 			case Circle circle:
 				type = circle.getType();
 				sidebar = new CreateSidebar();
+				
 				sidebar.setStrokeColor((Color) circle.getStroke());
 				sidebar.setFillColor((Color) circle.getFill());
 				sidebar.setNodeOpacity(circle.getOpacity());
 				sidebar.setNodeRotation(circle.getRotate());
 				sidebar.setCircleRadius(circle.getRadius());
 				sidebar.setNode(circle);
+				
 				break;
 			case Line line:
 				type = line.getType();
 				sidebar = new CreateSidebar(type);
+				
 				sidebar.setStrokeColor((Color) line.getStroke());
 				sidebar.setNodeOpacity(line.getOpacity());
 				sidebar.setNodeRotation(line.getRotate());
 				sidebar.setLineLength(line.getLength());
 				sidebar.setLineThickness(line.getStrokeWidth());
 				sidebar.setNode(line);
+				
 				break;
 			case Rectangle rectangle:
 				type = rectangle.getType();
 				sidebar = new CreateSidebar(type);
+				
 				sidebar.setStrokeColor((Color) rectangle.getStroke());
 				sidebar.setFillColor((Color) rectangle.getFill());
 				sidebar.setNodeOpacity(rectangle.getOpacity());
@@ -349,10 +361,12 @@ public class CreateContext
 				sidebar.setRectangleWidth(rectangle.getWidth());
 				sidebar.setRectangleHeight(rectangle.getHeight());
 				sidebar.setNode(rectangle);
+				
 				break;
 			case Text text:
 				type = text.getType();
 				sidebar = new CreateSidebar(type);
+				
 				sidebar.setStrokeColor((Color) text.getStroke());
 				sidebar.setFillColor((Color) text.getFill());
 				sidebar.setNodeOpacity(text.getOpacity());
@@ -360,6 +374,7 @@ public class CreateContext
 				sidebar.setTextFontSize(text.getSize());
 				sidebar.setTextString(text.getText());
 				sidebar.setNode(text);
+				
 				break;
 			default:
 				type = FigureType.NONE;

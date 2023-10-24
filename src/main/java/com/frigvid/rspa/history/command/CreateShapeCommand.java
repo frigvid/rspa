@@ -4,6 +4,9 @@ import com.frigvid.rspa.history.Command;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
+/**
+ * Undo-redo command for creating a shape.
+ */
 public class CreateShapeCommand
 		implements Command
 {
@@ -19,14 +22,12 @@ public class CreateShapeCommand
 	@Override
 	public void execute()
 	{
-		System.out.println("Adding shape to canvas...");
 		canvas.getChildren().add(shape);
 	}
 	
 	@Override
 	public void undo()
 	{
-		System.out.println("Removing shape from canvas...");
 		canvas.getChildren().remove(shape);
 	}
 }

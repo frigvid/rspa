@@ -7,6 +7,9 @@ import com.frigvid.rspa.figure.shape.Text;
 import com.frigvid.rspa.history.Command;
 import javafx.scene.Node;
 
+/**
+ * Undo-redo command for moving a shape.
+ */
 public class MoveShapeCommand
 		implements Command
 {
@@ -42,6 +45,19 @@ public class MoveShapeCommand
 		setShapePosition(shape, oldX, oldY);
 	}
 	
+	/**
+	 * Sets the position of an unknown node type.
+	 * <p>
+	 * Example usage:
+	 * <pre>
+	 *     moveShapeCmd = new MoveShapeCommand(shape, getShapeX(), getShapeY());
+	 *     moveShapeCmd.setShapePosition(shape, 100, 200);
+	 * </pre>
+	 *
+	 * @param shape The Shape or Text to move.
+	 * @param x The new x position.
+	 * @param y The new y position.
+	 */
 	public void setShapePosition(Node shape, double x, double y)
 	{
 		if (shape instanceof Circle circle)
@@ -53,6 +69,7 @@ public class MoveShapeCommand
 		{
 			double deltaX = x - line.getStartX();
 			double deltaY = y - line.getStartY();
+			
 			line.setStartX(line.getStartX() + deltaX);
 			line.setStartY(line.getStartY() + deltaY);
 			line.setEndX(line.getEndX() + deltaX);

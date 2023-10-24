@@ -10,6 +10,7 @@ public class Main
 	@Override
 	public void start(Stage stage)
 	{
+		// Instantiate and create the UI.
 		App ui = new App(stage);
 		ui.initialize();
 	}

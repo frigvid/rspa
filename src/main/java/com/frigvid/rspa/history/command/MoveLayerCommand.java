@@ -4,6 +4,9 @@ import com.frigvid.rspa.history.Command;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 
+/**
+ * Undo-redo command for moving a layer.
+ */
 public class MoveLayerCommand
 		implements Command
 {

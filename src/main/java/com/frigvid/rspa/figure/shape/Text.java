@@ -1,16 +1,26 @@
 package com.frigvid.rspa.figure.shape;
 
 import com.frigvid.rspa.figure.FigureType;
-import com.frigvid.rspa.figure.IFigure;
 import com.frigvid.rspa.figure.ShapeDragHandler;
 import javafx.scene.control.TextArea;
 import javafx.scene.text.Font;
 
-// TODO: Implement abstract wrapper class for Shapes and use that instead of extending it directly.
-// TODO: Investigate issue of style not being applied properly.
+/**
+ * Wrapper class for the Text shape.
+ * <p/>
+ * TODO: Implement abstract wrapper class for Shapes and use that instead of extending it directly.
+ * <p/>
+ * TODO: Investigate issue of style not being applied properly.
+ * <p/>
+ * NOTE: Advanced text functionality is implemented, but due to some state management issues between the object and the
+ * 		 text area, it is not currently being used. It is functional, but you'll need to go back to before the commit
+ * 		 dab8523 and use the right-click shape context menu. It is pretty easy to implement, but it'll just be a bit
+ * 		 weird, unless fixed, where the text area will not necessarily keep up with the state of the text object.
+ * <p/>
+ * NOTE: Since Shape dragging is being instantiated twice, it *should* be in its own class, but eh, it's not important.
+ */
 public class Text
 		extends javafx.scene.text.Text
-		implements IFigure
 {
 	private final static FigureType FIGURE_TYPE = FigureType.TEXT;
 	private boolean isItalic = false;
@@ -43,108 +53,25 @@ public class Text
 		dragHandler.enableDrag();
 	}
 	
+	/* Getters. */
+	/**
+	 * Gets the type of the figure.
+	 *
+	 * @return The type of the figure.
+	 */
 	public FigureType getType()
 	{
 		return FIGURE_TYPE;
 	}
 	
+	/**
+	 * Gets the shape.
+	 *
+	 * @return The shape.
+	 */
 	public Text getShape()
 	{
 		return this;
-	}
-	
-	/**
-	 * This method enables the use of multiple types of font
-	 * styles and lets you mix and match them in any order.
-	 * <p/>
-	 * Set the font styles using the following methods:
-	 * <ul>
-	 *     <li>{@link #setItalic()}</li>
-	 *     <li>{@link #setBold()}</li>
-	 *     <li>{@link #setUnderline()}</li>
-	 * </ul>
-	 */
-	public void setStyle()
-	{
-		String style = "";
-		style += isBold ? "-fx-font-weight: bold;" : "";
-		style += isItalic ? "-fx-font-style: italic;" : "";
-		style += isUnderline ? "-fx-underline: true;" : "";
-		this.setStyle(style);
-	}
-	
-	/**
-	 * Set the font size.
-	 * <p/>
-	 * Example usage:
-	 * <pre>
-	 *     Text text = new Text();
-	 *     text.setSize(12);
-	 * </pre>
-	 *
-	 * @param size The font size.
-	 * @see #getSize
-	 */
-	public void setSize(double size)
-	{
-		this.setFont(new Font(size));
-	}
-	
-	public void setPosition(double x, double y)
-	{
-		this.setX(x);
-		this.setY(y);
-	}
-	
-	/**
-	 * Set the text to be italic.
-	 * <p/>
-	 * Example usage:
-	 * <pre>
-	 *     Text text = new Text();
-	 *     text.setItalic();
-	 * </pre>
-	 *
-	 * @see #isItalic
-	 */
-	public void setItalic()
-	{
-		isItalic = !isItalic;
-		setStyle();
-	}
-	
-	/**
-	 * Set the text to be bold.
-	 * <p/>
-	 * Example usage:
-	 * <pre>
-	 *     Text text = new Text();
-	 *     text.setBold();
-	 * </pre>
-	 *
-	 * @see #isBold
-	 */
-	public void setBold()
-	{
-		isBold = !isBold;
-		setStyle();
-	}
-	
-	/**
-	 * Set the text to be underlined.
-	 * <p/>
-	 * Example usage:
-	 * <pre>
-	 *     Text text = new Text();
-	 *     text.setUnderline();
-	 * </pre>
-	 *
-	 * @see #isUnderlined
-	 */
-	public void setUnderline()
-	{
-		isUnderline = !isUnderline;
-		setStyle();
 	}
 	
 	/**
@@ -219,7 +146,21 @@ public class Text
 		return this.getFont().getSize();
 	}
 	
-	// TEMPORARY?
+	/**
+	 * Gets the text with HTML style tags.
+	 * <p/>
+	 * This is specifically useful for testing purposes.
+	 * <p/>
+	 * Example usage:
+	 * <pre>
+	 *     Text text = new Text();
+	 *     text.setText("Hi mom!");
+	 *     text.setBold();
+	 *     String textWithStyle = text.getTextWithStyle();
+	 * </pre>
+	 *
+	 * @param textArea The text area to get the text from.
+	 */
 	public void getTextWithStyle(TextArea textArea)
 	{
 		String text = textArea.getText();
@@ -236,5 +177,112 @@ public class Text
 			text = "<i>" + text + "</i>";
 			//drawableText.setFontStyle(FontPosture.ITALIC);
 		}
+	}
+	
+	/* Setters. */
+	/**
+	 * This method enables the use of multiple types of font
+	 * styles and lets you mix and match them in any order.
+	 * <p/>
+	 * Set the font styles using the following methods:
+	 * <ul>
+	 *     <li>{@link #setItalic()}</li>
+	 *     <li>{@link #setBold()}</li>
+	 *     <li>{@link #setUnderline()}</li>
+	 * </ul>
+	 */
+	public void setStyle()
+	{
+		String style = "";
+		style += isBold ? "-fx-font-weight: bold;" : "";
+		style += isItalic ? "-fx-font-style: italic;" : "";
+		style += isUnderline ? "-fx-underline: true;" : "";
+		this.setStyle(style);
+	}
+	
+	/**
+	 * Set the font size.
+	 * <p/>
+	 * Example usage:
+	 * <pre>
+	 *     Text text = new Text();
+	 *     text.setSize(12);
+	 * </pre>
+	 *
+	 * @param size The font size.
+	 * @see #getSize
+	 */
+	public void setSize(double size)
+	{
+		this.setFont(new Font(size));
+	}
+	
+	/**
+	 * Set the x and y coordinates of the text.
+	 * <p/>
+	 * Example usage:
+	 * <pre>
+	 *     Text text = new Text();
+	 *     text.setPosition(10, 10);
+	 * </pre>
+	 *
+	 * @param x The x coordinate of the text.
+	 * @param y The y coordinate of the text.
+	 */
+	public void setPosition(double x, double y)
+	{
+		this.setX(x);
+		this.setY(y);
+	}
+	
+	/**
+	 * Set the text to be italic.
+	 * <p/>
+	 * Example usage:
+	 * <pre>
+	 *     Text text = new Text();
+	 *     text.setItalic();
+	 * </pre>
+	 *
+	 * @see #isItalic
+	 */
+	public void setItalic()
+	{
+		isItalic = !isItalic;
+		setStyle();
+	}
+	
+	/**
+	 * Set the text to be bold.
+	 * <p/>
+	 * Example usage:
+	 * <pre>
+	 *     Text text = new Text();
+	 *     text.setBold();
+	 * </pre>
+	 *
+	 * @see #isBold
+	 */
+	public void setBold()
+	{
+		isBold = !isBold;
+		setStyle();
+	}
+	
+	/**
+	 * Set the text to be underlined.
+	 * <p/>
+	 * Example usage:
+	 * <pre>
+	 *     Text text = new Text();
+	 *     text.setUnderline();
+	 * </pre>
+	 *
+	 * @see #isUnderlined
+	 */
+	public void setUnderline()
+	{
+		isUnderline = !isUnderline;
+		setStyle();
 	}
 }

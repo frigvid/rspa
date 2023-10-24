@@ -5,6 +5,11 @@ import com.frigvid.rspa.history.Command;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 
+/**
+ * Undo-redo command for changing the stroke color of a shape or text.
+ * <p/>
+ * TODO: Implement an unsupported type exception. Not really necessary, but it would be nice.
+ */
 public class ColorStrokeCommand
 		implements Command
 {
@@ -26,7 +31,7 @@ public class ColorStrokeCommand
 		{
 			shape.setStroke(newValue);
 		}
-		else if (node instanceof Text text)
+		else if (node instanceof Text text) // It's not always false, the caller may pass an unsupported type. Ignore it.
 		{
 			text.setStroke(newValue);
 		}
@@ -39,7 +44,7 @@ public class ColorStrokeCommand
 		{
 			shape.setStroke(oldValue);
 		}
-		else if (node instanceof Text text)
+		else if (node instanceof Text text) // It's not always false, the caller may pass an unsupported type. Ignore it.
 		{
 			text.setStroke(oldValue);
 		}

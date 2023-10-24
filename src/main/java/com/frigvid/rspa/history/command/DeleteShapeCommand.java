@@ -4,6 +4,9 @@ import com.frigvid.rspa.history.Command;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
+/**
+ * Undo-redo command for deleting a shape.
+ */
 public class DeleteShapeCommand
 		implements Command
 {
@@ -26,6 +29,5 @@ public class DeleteShapeCommand
 	public void undo()
 	{
 		canvas.getChildren().add(shape);
-		
 	}
 }

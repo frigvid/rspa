@@ -1,7 +1,6 @@
 package com.frigvid.rspa.ui;
 
 import com.frigvid.rspa.figure.FigureType;
-import com.frigvid.rspa.figure.shape.Text;
 import com.frigvid.rspa.history.InvokeCommand;
 import com.frigvid.rspa.history.command.*;
 import javafx.beans.value.ChangeListener;
@@ -11,7 +10,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -197,11 +195,11 @@ public class CreateSidebar
 		);
 		
 		strokeColorPicker.valueProperty().addListener(spinnerChangeListener(stroke ->
-		{
-			ColorStrokeCommand colorStrokeCmd = new ColorStrokeCommand(shape, strokeColor, stroke);
-			invokeCommand.execute(colorStrokeCmd);
-			strokeColor = stroke; // Update the variable value, should you need to use a getter.
-		}));
+				{
+					ColorStrokeCommand colorStrokeCmd = new ColorStrokeCommand(shape, strokeColor, stroke);
+					invokeCommand.execute(colorStrokeCmd);
+					strokeColor = stroke; // Update the variable value, should you need to use a getter.
+				}));
 		
 		return sidebarItem;
 	}
@@ -722,46 +720,6 @@ public class CreateSidebar
 	}
 	
 	/* Listeners. */
-	/**
-	 * This is a generic listener for the ColorPicker components.
-	 * It's a bit ugly and could do to be less verbose, but it works.
-	 *
-	 * @param isStroke Whether the ColorPicker is for the stroke or fill.
-	 * @return The ChangeListener for the ColorPicker.
-	 */
-	private ChangeListener<Color> colorChangeListener(boolean isStroke)
-	{
-		return (observable, oldValue, newValue) ->
-		{
-			if (shape instanceof Shape)
-			{
-				if (isStroke)
-				{
-					strokeColor = newValue;
-					((Shape) shape).setStroke(newValue);
-				}
-				else
-				{
-					fillColor = newValue;
-					((Shape) shape).setFill(newValue);
-				}
-			}
-			else if (shape instanceof Text) // This complains it'll always be false. It won't, just ignore it.
-			{
-				if (isStroke)
-				{
-					strokeColor = newValue;
-					((Text) shape).setStroke(newValue);
-				}
-				else
-				{
-					fillColor = newValue;
-					((Text) shape).setFill(newValue);
-				}
-			}
-		};
-	}
-	
 	/**
 	 * This is a generic listener for the Spinner components.
 	 * <p/>

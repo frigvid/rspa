@@ -1,19 +1,23 @@
 package com.frigvid.rspa.figure.shape;
 
 import com.frigvid.rspa.figure.FigureType;
-import com.frigvid.rspa.figure.IFigure;
 import com.frigvid.rspa.figure.ShapeDragHandler;
 
-// TODO: Implement abstract wrapper class for Shapes and use that instead of extending it directly.
+/**
+ * Wrapper class for the Circle shape.
+ * <p/>
+ * TODO: Implement abstract wrapper class for Shapes and use that instead of extending it directly.
+ * <p/>
+ * NOTE: Since Shape dragging is being instantiated twice, it *should* be in its own class, but eh, it's not important.
+ */
 public class Circle
 		extends javafx.scene.shape.Circle
-		implements IFigure
 {
 	private final static FigureType FIGURE_TYPE = FigureType.CIRCLE;
 	
 	public Circle()
 	{
-		/* Enable dragging of any Line shape. */
+		// Enable dragging of any Line shape.
 		ShapeDragHandler dragHandler = new ShapeDragHandler(this);
 		dragHandler.enableDrag();
 	}
@@ -22,11 +26,12 @@ public class Circle
 	{
 		super(centerX, centerY, radius);
 		
-		/* Enable dragging of any Circle shape. */
+		// Enable dragging of any Circle shape.
 		ShapeDragHandler dragHandler = new ShapeDragHandler(this);
 		dragHandler.enableDrag();
 	}
 	
+	/* Getters. */
 	public FigureType getType()
 	{
 		return FIGURE_TYPE;
@@ -37,34 +42,10 @@ public class Circle
 		return this;
 	}
 	
+	/* Setters. */
 	public void setPosition(double x, double y)
 	{
 		this.setCenterX(x);
 		this.setCenterY(y);
 	}
-	
-	// TESTING
-	//public Type getType()
-	//{
-	//	return Type.CIRCLE;
-	//}
-	
-	/* Mathematical functions. Very pointless though, so commented out until further notice.
-	 * Might be useful for something like what's done in the Line class though.
-	public double calculateArea() {
-		return Math.PI * Math.pow(this.getRadius(), 2);
-	}
-	
-	public double calculatePerimeter() {
-		return 2 * Math.PI * this.getRadius();
-	}
-	
-	public double calculateDiameter() {
-		return 2 * this.getRadius();
-	}
-	
-	public double calculateCircumference() {
-		return 2 * Math.PI * this.getRadius();
-	}
-	*/
 }

@@ -3,7 +3,11 @@ package com.frigvid.rspa.history.command;
 import com.frigvid.rspa.history.Command;
 import javafx.scene.Node;
 
-// TODO: Investigate why undoing this resets the opacity to 1.0 instead of the old value.
+/**
+ * Undo-redo command for opacity changes.
+ * <p/>
+ * TODO: Investigate why undoing this resets the opacity to 1.0 instead of the old value.
+ */
 public class OpacityCommand
 		implements Command
 {

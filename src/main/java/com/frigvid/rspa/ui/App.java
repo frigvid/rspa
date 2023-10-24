@@ -52,19 +52,11 @@ public class App
 		{
 			if (cZ.match(event))
 			{
-				System.out.println("Undo");
 				invokeCommand.undo();
-				//ICommand cmd = historyStack.getUndoStack().pop();
-				//cmd.undo();
-				//historyStack.addToRedoStack(cmd);
 			}
 			else if (cSZ.match(event))
 			{
-				System.out.println("Redo");
 				invokeCommand.redo();
-				//ICommand cmd = historyStack.getRedoStack().pop();
-				//cmd.redo();
-				//historyStack.addToUndoStack(cmd);
 			}
 		});
 		
@@ -119,54 +111,7 @@ public class App
 		return canvas;
 	}
 	
-	
-	
-	
-	//private void initCursorHover(Scene scene, Shape shape)
-	//{
-	//	// Detect ALT key pressed and released
-	//	scene.setOnKeyPressed(event ->
-	//	{
-	//		if (event.isAltDown())
-	//		{
-	//			altPressed = true;
-	//			if (!mousePressed)
-	//			{
-	//				scene.setCursor(Cursor.OPEN_HAND);
-	//			}
-	//		}
-	//	});
-	//
-	//	scene.setOnKeyReleased(event ->
-	//	{
-	//		if (event.getCode().toString().equals("ALT"))
-	//		{
-	//			altPressed = false;
-	//			scene.setCursor(Cursor.DEFAULT);
-	//		}
-	//	});
-	//
-	//	// Detect mouse pressed and released with ALT key
-	//	scene.setOnMousePressed(event ->
-	//	{
-	//		if (altPressed && event.isPrimaryButtonDown())
-	//		{
-	//			mousePressed = true;
-	//			scene.setCursor(Cursor.CLOSED_HAND);
-	//			shape.setOnMousePressed(this::handleShapePress);
-	//		}
-	//	});
-	//
-	//	scene.setOnMouseReleased(event ->
-	//	{
-	//		if (altPressed)
-	//		{
-	//			mousePressed = false;
-	//			scene.setCursor(Cursor.OPEN_HAND);
-	//		}
-	//	});
-	//}
-	//
+	// TODO: This is left as reference, for some future fixes for various x-y position translation offset issues.
 	//private void handleShapePress(MouseEvent event)
 	//{
 	//	Shape shape = (Shape) event.getSource();

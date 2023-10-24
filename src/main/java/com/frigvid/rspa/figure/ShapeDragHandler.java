@@ -20,8 +20,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *     ShapeDragHandler shapeDragHandler = new ShapeDragHandler(shape);
  *     shapeDragHandler.enableDrag();
  * </pre>
- * TODO: This should probably be moved into an abstract wrapper class for Shapes instead of being its own thing.
- * NOTE: However, this can be considered as mostly complete for now.
+ * NOTE: This should probably be moved into an abstract wrapper class for Shapes instead of being its own thing.
  */
 public class ShapeDragHandler
 {
@@ -51,98 +50,98 @@ public class ShapeDragHandler
 		 * 		 the mouse is moved.
 		 */
 		shape.setOnMouseMoved(event ->
-		{
-			if (event.isAltDown())
-			{
-				shape.setCursor(Cursor.OPEN_HAND);
-			}
-			else
-			{
-				shape.setCursor(Cursor.HAND);
-			}
-		});
+				{
+					if (event.isAltDown())
+					{
+						shape.setCursor(Cursor.OPEN_HAND);
+					}
+					else
+					{
+						shape.setCursor(Cursor.HAND);
+					}
+				});
 		
 		/* Set cursor to move, when pressing and holding Cursor Primary Key. */
 		shape.setOnMousePressed(event ->
-		{
-			// Save old position of shape on click.
-			oldX = getShapeX();
-			oldY = getShapeY();
-			
-			// Construct new command using the minimal constructor.
-			moveShapeCmd = new MoveShapeCommand(shape, getShapeX(), getShapeY());
-			
-			if (event.isAltDown() && event.isPrimaryButtonDown())
-			{
-				shape.setCursor(Cursor.MOVE);
-				xOffset.set(event.getSceneX() - getShapeX());
-				yOffset.set(event.getSceneY() - getShapeY());
-				event.consume();
-			}
-			else if (!event.isAltDown())
-			{
-				shape.setCursor(Cursor.HAND);
-			}
-		});
+				{
+					// Save old position of shape on click.
+					oldX = getShapeX();
+					oldY = getShapeY();
+					
+					// Construct new command using the minimal constructor.
+					moveShapeCmd = new MoveShapeCommand(shape, getShapeX(), getShapeY());
+					
+					if (event.isAltDown() && event.isPrimaryButtonDown())
+					{
+						shape.setCursor(Cursor.MOVE);
+						xOffset.set(event.getSceneX() - getShapeX());
+						yOffset.set(event.getSceneY() - getShapeY());
+						event.consume();
+					}
+					else if (!event.isAltDown())
+					{
+						shape.setCursor(Cursor.HAND);
+					}
+				});
 		
 		/* Handle actual movement of Shapes while ALT is pressed. */
 		shape.setOnMouseDragged(event ->
-		{
-			if (event.isAltDown())
-			{
-				// Update position of shape while dragging.
-				newX = event.getSceneX() - xOffset.get();
-				newY = event.getSceneY() - yOffset.get();
-				
-				Pane canvas = (Pane) shape.getParent();
-				double canvasWidth = canvas.getWidth();
-				double canvasHeight = canvas.getHeight();
-				
-				double shapeWidth = getShapeWidth();
-				double shapeHeight = getShapeHeight();
-				
-				newX = Math.max(0, newX);
-				newY = Math.max(0, newY);
-				
-				if (newX + shapeWidth > canvasWidth)
 				{
-					newX = canvasWidth - shapeWidth;
-				}
-				if (newY + shapeHeight > canvasHeight)
-				{
-					newY = canvasHeight - shapeHeight;
-				}
-				
-				// Use command method to update position of shape while in movement.
-				moveShapeCmd.setShapePosition(shape, newX, newY);
-			}
-		});
+					if (event.isAltDown())
+					{
+						// Update position of shape while dragging.
+						newX = event.getSceneX() - xOffset.get();
+						newY = event.getSceneY() - yOffset.get();
+						
+						Pane canvas = (Pane) shape.getParent();
+						double canvasWidth = canvas.getWidth();
+						double canvasHeight = canvas.getHeight();
+						
+						double shapeWidth = getShapeWidth();
+						double shapeHeight = getShapeHeight();
+						
+						newX = Math.max(0, newX);
+						newY = Math.max(0, newY);
+						
+						if (newX + shapeWidth > canvasWidth)
+						{
+							newX = canvasWidth - shapeWidth;
+						}
+						if (newY + shapeHeight > canvasHeight)
+						{
+							newY = canvasHeight - shapeHeight;
+						}
+						
+						// Use command method to update position of shape while in movement.
+						moveShapeCmd.setShapePosition(shape, newX, newY);
+					}
+				});
 		
 		shape.setOnMouseReleased(event ->
-		{
-			newX = getShapeX();
-			newY = getShapeY();
-			
-			if(event.isAltDown())
-			{
-				shape.setCursor(Cursor.OPEN_HAND);
-			}
-			else
-			{
-				shape.setCursor(Cursor.HAND);
-			}
-			
-			// Add command to stack. Reason for making a new command is due to position offset issues occur otherwise.
-			moveShapeCmd = new MoveShapeCommand(shape, oldX, oldY, newX, newY);
-			invokeCommand.execute(moveShapeCmd);
-		});
+				{
+					newX = getShapeX();
+					newY = getShapeY();
+					
+					if(event.isAltDown())
+					{
+						shape.setCursor(Cursor.OPEN_HAND);
+					}
+					else
+					{
+						shape.setCursor(Cursor.HAND);
+					}
+					
+					// Add command to stack. Reason for making a new command is due to position offset issues occur otherwise.
+					moveShapeCmd = new MoveShapeCommand(shape, oldX, oldY, newX, newY);
+					invokeCommand.execute(moveShapeCmd);
+				});
 		
 		/* Reset cursor when mouse exits the shape. */
 		shape.setOnMouseExited(event -> shape.setCursor(Cursor.DEFAULT));
 	}
 	
 	/**
-	 * Wrapper method for X-coordinate of shape.
+	 * Wrapper method for X-coordinate of a shape.
 	 * <p/>
 	 * Example usage (assuming you've initialized):
 	 * <pre>
@@ -178,7 +177,7 @@ public class ShapeDragHandler
 	}
 	
 	/**
-	 * Wrapper method for Y-coordinate of shape.
+	 * Wrapper method for Y-coordinate of a shape.
 	 * <p/>
 	 * Example usage (assuming you've initialized):
 	 * <pre>
@@ -214,7 +213,7 @@ public class ShapeDragHandler
 	}
 	
 	/**
-	 * Wrapper method for width (or radius) of shape.
+	 * Wrapper method for width (or radius) of a shape.
 	 * <p/>
 	 * Example usage (assuming you've initialized):
 	 * <pre>
@@ -250,7 +249,7 @@ public class ShapeDragHandler
 	}
 	
 	/**
-	 * Wrapper method for height (or radius) of shape.
+	 * Wrapper method for height (or radius) of a shape.
 	 * <p/>
 	 * Example usage (assuming you've initialized):
 	 * <pre>

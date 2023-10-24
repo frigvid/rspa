@@ -3,6 +3,9 @@ package com.frigvid.rspa.history.command;
 import com.frigvid.rspa.figure.shape.Text;
 import com.frigvid.rspa.history.Command;
 
+/**
+ * Undo-redo command for changing the text of a Text node.
+ */
 public class TextCommand
 		implements Command
 {

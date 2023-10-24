@@ -5,7 +5,12 @@ import com.frigvid.rspa.history.Command;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 
-// TODO: Text should not have fill changes added to stack.
+/**
+ * Undo-redo command for changing the fill color of a shape.
+ * <p/>
+ * TODO: Text should not have fill changes added to stack.
+ * TODO: Implement an unsupported type exception. Not really necessary, but it would be nice.
+ */
 public class ColorFillCommand
 		implements Command
 {
@@ -27,7 +32,7 @@ public class ColorFillCommand
 		{
 			shape.setFill(newValue);
 		}
-		else if (node instanceof Text text)
+		else if (node instanceof Text text) // It's not always false, the caller may pass an unsupported type. Ignore it.
 		{
 			text.setFill(newValue);
 		}
@@ -40,7 +45,7 @@ public class ColorFillCommand
 		{
 			shape.setFill(oldValue);
 		}
-		else if (node instanceof Text text)
+		else if (node instanceof Text text) // It's not always false, the caller may pass an unsupported type. Ignore it.
 		{
 			text.setFill(oldValue);
 		}

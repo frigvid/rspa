@@ -1,13 +1,17 @@
 package com.frigvid.rspa.figure.shape;
 
 import com.frigvid.rspa.figure.FigureType;
-import com.frigvid.rspa.figure.IFigure;
 import com.frigvid.rspa.figure.ShapeDragHandler;
 
-// TODO: Implement abstract wrapper class for Shapes and use that instead of extending it directly.
+/**
+ * Wrapper class for the Rectangle shape.
+ * <p/>
+ * TODO: Implement abstract wrapper class for Shapes and use that instead of extending it directly.
+ * <p/>
+ * NOTE: Since Shape dragging is being instantiated twice, it *should* be in its own class, but eh, it's not important.
+ */
 public class Rectangle
 		extends javafx.scene.shape.Rectangle
-		implements IFigure
 {
 	private final static FigureType FIGURE_TYPE = FigureType.RECTANGLE;
 	
@@ -27,16 +31,28 @@ public class Rectangle
 		dragHandler.enableDrag();
 	}
 	
+	/* Getters. */
+	/**
+	 * Gets the type of the figure.
+	 *
+	 * @return The type of the figure.
+	 */
 	public FigureType getType()
 	{
 		return FIGURE_TYPE;
 	}
 	
+	/**
+	 * Gets the shape.
+	 *
+	 * @return The shape.
+	 */
 	public Rectangle getShape()
 	{
 		return this;
 	}
 	
+	/* Setters. */
 	/**
 	 * Set the width and height of the rectangle.
 	 * <p/>
@@ -60,43 +76,4 @@ public class Rectangle
 		this.setX(x);
 		this.setY(y);
 	}
-	
-	/* Mathematical functions. Very pointless though, so commented out until further notice.
-	 * Might be useful for something like what's done in the Line class though.
-	public double calculateArea()
-	{
-		return this.getWidth() * this.getHeight();
-	}
-	
-	public double calculatePerimeter()
-	{
-		return 2 * (this.getWidth() + this.getHeight());
-	}
-	
-	public double calculateSurfaceArea()
-	{
-		return 2 * (calculateArea() + this.getWidth() * this.getHeight() + this.getHeight() * this.getWidth());
-	}
-	*/
-	
-	/* NOTE: Not sure if these will be useful yet,
-	 * 		 but I'm keeping them here for now.
-	 *       I may end up removing them later.
-	public double getCenterX()
-	{
-		return this.getX() + this.getWidth() / 2;
-	}
-	public double getCenterY()
-	{
-		return this.getY() + this.getHeight() / 2;
-	}
-	public void setCenterX(double x)
-	{
-		this.setX(x - this.getWidth() / 2);
-	}
-	public void setCenterY(double y)
-	{
-		this.setY(y - this.getHeight() / 2);
-	}
-	*/
 }

@@ -3,7 +3,11 @@ package com.frigvid.rspa.history.command;
 import com.frigvid.rspa.history.Command;
 import javafx.scene.Node;
 
-// TODO: Circle should not have rotation changes added to stack.
+/**
+ * Undo-redo command for rotation changes.
+ * <p/>
+ * TODO: Circle should not have rotation changes added to stack.
+ */
 public class RotateCommand
 		implements Command
 {

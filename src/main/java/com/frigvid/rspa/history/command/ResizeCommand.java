@@ -7,7 +7,11 @@ import com.frigvid.rspa.figure.shape.Text;
 import com.frigvid.rspa.history.Command;
 import javafx.scene.Node;
 
-// TODO: Fix this terrible abomination.
+/**
+ * Undo-redo command for resizing changes.
+ * <p/>
+ * TODO: Fix this terrible abomination.
+ */
 public class ResizeCommand
 		implements Command
 {
