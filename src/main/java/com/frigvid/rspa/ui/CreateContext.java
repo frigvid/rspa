@@ -19,13 +19,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 
-import java.util.Objects;
-
 public class CreateContext
 {
 	private final InvokeCommand invokeCommand = new InvokeCommand(); // For undo-redo.
 	private ContextMenu openContext;
-	InputValue newValue = new InputValue();
 	
 	/**
 	 * Create context menu for a shape.
@@ -53,10 +50,7 @@ public class CreateContext
 		MenuItem moveBackwardByOne = new MenuItem("Send Backward by One");
 		MenuItem delete = new MenuItem("Delete");
 		
-		selectShapeImmediate.setOnAction(event ->
-				{
-					createShapeSidebar(shape, (BorderPane) canvas.getParent());
-				});
+		selectShapeImmediate.setOnAction(event -> createShapeSidebar(shape, (BorderPane) canvas.getParent()));
 		
 		moveToFront.setOnAction(event ->
 				{
@@ -64,12 +58,14 @@ public class CreateContext
 					layerCmd.execute();
 					invokeCommand.execute(layerCmd);
 				});
+		
 		moveToBack.setOnAction(event ->
 				{
 					MoveLayerCommand layerCmd = new MoveLayerCommand(shape, MoveLayerCommand.MoveAction.TO_BACK, canvas.getChildren());
 					layerCmd.execute();
 					invokeCommand.execute(layerCmd);
 				});
+		
 		moveForwardByOne.setOnAction(event ->
 				{
 					MoveLayerCommand layerCmd = new MoveLayerCommand(shape, MoveLayerCommand.MoveAction.FORWARD_BY_ONE, canvas.getChildren());
@@ -380,179 +376,6 @@ public class CreateContext
 		sidebar.setFigureType(type);
 		sidebar.initialize();
 		root.setRight(sidebar.getSidebar());
-	}
-	
-	/**
-	 * Instance menu item for changing circle radius.
-	 * <p/>
-	 * TODO: Fix position transform.
-	 * TODO: Implement missing features.
-	 *
-	 * @param shape The Circle to change.
-	 * @return The menu item.
-	 */
-	private MenuItem instanceCircle(Shape shape)
-	{
-		MenuItem changeRadius = new MenuItem("Change Radius");
-		
-		changeRadius.setOnAction(e ->
-		{
-			Circle circle = (Circle) shape;
-			double initialRadius = circle.getRadius();
-			double newRadius = newValue.numberInput("Change Radius", "Enter new radius:", initialRadius);
-			if (newRadius != initialRadius)
-			{
-				//ChangeShapeSizeCommand cmd = new ChangeShapeSizeCommand(circle, 0, 0, initialRadius);
-				//cmd.setNewSize(0, 0, newRadius);
-				circle.setRadius(newRadius);
-				//undoStack.push(cmd);
-				//redoStack.clear();
-			}
-		});
-		
-		return changeRadius;
-	}
-	
-	/**
-	 * Instance menu item for changing line length.
-	 *
-	 * @param shape The Line to change.
-	 * @return The menu item.
-	 */
-	private MenuItem instanceLine(Shape shape)
-	{
-		MenuItem changeLength = new MenuItem("Change Length");
-		
-		changeLength.setOnAction(e ->
-		{
-			Line line = (Line) shape;
-			double initialLength = line.getLength();
-			double newLength = newValue.numberInput("Change Length", "Enter new length:", initialLength);
-			if (newLength != initialLength)
-			{
-				//ChangeShapeSizeCommand cmd = new ChangeShapeSizeCommand(circle, 0, 0, initialRadius);
-				//cmd.setNewSize(0, 0, newRadius);
-				line.setLength(newLength);
-				//undoStack.push(cmd);
-				//redoStack.clear();
-			}
-		});
-		
-		return changeLength;
-	}
-	
-	/**
-	 * Instance menu item for changing rectangle height.
-	 * <p/>
-	 * TODO: Fix position transform.
-	 * TODO: Implement missing features.
-	 *
-	 * @see #instanceRectangleWidth(Shape)
-	 * @param shape The Rectangle height to change.
-	 * @return The menu item.
-	 */
-	private MenuItem instanceRectangleHeight(Shape shape)
-	{
-		MenuItem changeHeight = new MenuItem("Change Height");
-		
-		changeHeight.setOnAction(e ->
-		{
-			Rectangle rectangle = (Rectangle) shape;
-			double initialHeight = rectangle.getHeight();
-			double newHeight = newValue.numberInput("Change Width", "Enter new width:", initialHeight);
-			if (newHeight != initialHeight)
-			{
-				rectangle.setHeight(newHeight);
-				//ChangeShapeSizeCommand cmd = new ChangeShapeSizeCommand(rectangle, initialWidth, rectangle.getHeight(), 0);
-				//cmd.setNewSize(newWidth, rectangle.getHeight(), 0);
-				//undoStack.push(cmd);
-				//redoStack.clear();
-			}
-		});
-		
-		return changeHeight;
-	}
-	
-	/**
-	 * Instance menu item for changing rectangle width.
-	 * <p/>
-	 * TODO: Fix position transform.
-	 * TODO: Implement missing features.
-	 *
-	 * @see #instanceRectangleHeight(Shape)
-	 * @param shape The Rectangle width to change.
-	 * @return The menu item.
-	 */
-	private MenuItem instanceRectangleWidth(Shape shape)
-	{
-		MenuItem changeWidth = new MenuItem("Change Width");
-		
-		changeWidth.setOnAction(e ->
-		{
-			Rectangle rectangle = (Rectangle) shape;
-			double initialWidth = rectangle.getWidth();
-			double newWidth = newValue.numberInput("Change Width", "Enter new width:", initialWidth);
-			if (newWidth != initialWidth)
-			{
-				rectangle.setWidth(newWidth);
-				//ChangeShapeSizeCommand cmd = new ChangeShapeSizeCommand(rectangle, initialWidth, rectangle.getHeight(), 0);
-				//cmd.setNewSize(newWidth, rectangle.getHeight(), 0);
-				//undoStack.push(cmd);
-				//redoStack.clear();
-			}
-		});
-		
-		return changeWidth;
-	}
-	
-	// TODO: Clean up method.
-	/**
-	 * Instance menu item for changing text.
-	 * <p/>
-	 * TODO: Fix position transform.
-	 * TODO: Implement missing features.
-	 *
-	 * @param shape The Text to change.
-	 * @return The menu item.
-	 */
-	private MenuItem instanceText(Shape shape)
-	{
-		MenuItem changeText = new MenuItem("Change Text");
-		
-		changeText.setOnAction(e ->
-		{
-			Text text = (Text) shape;
-			//String initialText = text.getText();
-			//String newText = newValue.textInput("Change Text", "Enter new text:", initialText);
-			Text newText = newValue.textInputAlt(text);
-			if (!Objects.equals(newText, text))
-			{
-				text.setText(newText.getText());
-				text.setSize(newText.getSize());
-				
-				if (newText.isBold())
-				{
-					text.setBold();
-				}
-				
-				if (newText.isItalic())
-				{
-					text.setItalic();
-				}
-				
-				if (newText.isUnderlined())
-				{
-					text.setUnderline();
-				}
-				
-				//ChangeShapeSizeCommand cmd = new ChangeShapeSizeCommand(rectangle, initialWidth, rectangle.getHeight(), 0);
-				//cmd.setNewSize(newWidth, rectangle.getHeight(), 0);
-				//undoStack.push(cmd);
-				//redoStack.clear();
-			}
-		});
-		
-		return changeText;
 	}
 	
 	/**
