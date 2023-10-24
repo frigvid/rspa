@@ -3,7 +3,6 @@ package com.frigvid.rspa.ui;
 import com.frigvid.rspa.figure.FigureType;
 import com.frigvid.rspa.figure.shape.Line;
 import com.frigvid.rspa.figure.shape.Rectangle;
-import com.frigvid.rspa.figure.ShapeHandler;
 import com.frigvid.rspa.figure.shape.Text;
 import com.frigvid.rspa.figure.shape.Circle;
 import com.frigvid.rspa.history.InvokeCommand;
